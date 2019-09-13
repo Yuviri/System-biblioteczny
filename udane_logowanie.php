@@ -36,6 +36,7 @@
                 <li><a href="#">Rejestracja</a></li>
                 <li><a href="login_form.html">Logowanie</a></li>
                 <li><a href="#">Panel klienta</a></li>
+                
             </ul>
         </nav>
     </div>
