@@ -1,19 +1,8 @@
-<!DOCTYPE html>
-<html>
-    <?php
-            if(!isset($_SESSION)) 
-            { 
-                session_start(); 
-            } 
-            if(isset($_SESSION['imie']) && isset($_SESSION['nazwisko'])){
-                require_once('database.php');
-            }
-            else{
-                header('Location: index.php?error=unknown');
-                exit();
-            }
-    ?>	
+<?php 
+session_start();
+?>
 
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -56,17 +45,9 @@
                     <a href="login_form.php" class="nav-link">Logowanie</a>
                 </li>
 
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="submenu">Imię i nazwisko</a>
-
-                    <div class="dropdown-menu" aria-labelledby="submenu">
-                        <a href='user-lends.php' class="dropdown-item">Moje wypożyczenia</a>
-                        <a href="settings.php" class="dropdown-item">Ustawiena konta</a>
-                        <div class="dropdown-divider"></div>
-                        <a href="logout.php" class="dropdown-item">Wyloguj się </a>
-                    </div>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Panel klienta</a>
                 </li>
-
             </ul>
 
         </div>
@@ -74,34 +55,53 @@
 
 </header>
 <main>
-    <section class="main_page">
+    <section>
+        <div class="container">
+            <form action="login.php" method="POST">
+                <div class="row mt-4">
 
-        <div class="container mt-4 bg-light text-body">
-            <header>
-                <h1>Strona główna projektu dyplomowego</h1>
-                <p>Tu coś będzie w niedalekiej przyszłości.</p>
-            </header>
-            <article>
-                <div class="user_control">
-                    <?php 
-                        echo "Witaj ".$_SESSION['imie']." ".$_SESSION['nazwisko'];
+                <?php
+                    if(isset($_SESSION["err-public"])){
+                        echo "<div class='alert alert-warning col-11 mx-auto mt-4' role='alert'>".
+                        $_SESSION["err-public"].
+                        "</div>";
+                        unset($_SESSION["err-public"]);
+                    }
+                    if(isset($_SESSION["err-dev"])){
+                        echo "<div class='alert alert-info col-11 mx-auto mt-2' role='alert'>".
+                        $_SESSION["err-dev"].
+                        "</div>";
+                        unset($_SESSION["err-dev"]);
+                    }
                     ?>
-                <br>
-                    <a class="check_t" href="user_panel.php">Panel użytkownika</a>
-                    <a class="logout" href="logout.php">Wyloguj się</a>
-                </div>
-            </article>
-        </div>
- 
-    </section>
 
+                    <div class="form-group col-12">
+                        <label for="email">E-mail:</label>
+                        <input type="email" name="email" id="email" class="form-control <?php if(isset($_SESSION["err-login"])){
+                            echo "is-invalid";
+                        } ?>">
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="password">Hasło:</label>
+                        <input type="password" name="password" id="password" class="form-control <?php if(isset($_SESSION["err-login"])){
+                            echo "is-invalid";
+                        } ?>">
+                        <?php if(isset($_SESSION["err-login"])){
+                            echo $_SESSION["err-login"];
+                            unset($_SESSION["err-login"]);
+                        } ?>
+                    </div>
+                    <input type="submit" value="Zaloguj się" class="btn btn-success mx-auto d-block mt-4">
+                </div>
+            </form>
+        </div>
+    </section>
 </main>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
 	</script>
 	<script src="bootstrap.min.js"></script>
-
 
 </body>
 </html>

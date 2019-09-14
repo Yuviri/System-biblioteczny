@@ -1,6 +1,10 @@
 <?php
-    $server_name="localhost";
-    $username="root";
-    $password="";
-    $db_name="library";
-?>
+
+    return array(
+        'host' => 'localhost',
+        'user' => 'root',
+        'password' => '',
+        'name' => 'library'
+    );
+
+

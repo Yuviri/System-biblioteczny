@@ -6,6 +6,6 @@
 
     session_destroy();
 
-    header("Location: index.html");
+    header("Location: login_form.php");
 
 ?>

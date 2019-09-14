@@ -1,63 +1,50 @@
 <?php
 
-require_once "connect.php";
+	session_start();
+	
+	if ((!isset($_POST['email'])) || (!isset($_POST['password'])))
+	{
+		header('Location: login-form.php');
+		exit();
+	}
 
-$polaczenie = new mysqli($server_name, $username, $password, $db_name);
-$polaczenie->query("SET NAMES 'utf8' COLLATE 'utf8_polish_ci'");
+	require_once "database.php";
 
-if($polaczenie->connect_errno!=0){
-    $error =  "Error: ". $polaczenie->connect_errno . " Szczegóły: " . $polaczenie->connect_error;
-    header("Location: index.php?signup='$error'");
-    exit();
-} else{
-    $email = $_POST['email'];
-    $haslo = $_POST['password'];
+	try {
 
-    // $check_p = "SELECT haslo FROM logo WHERE email='$email'";
+			$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+			$password = filter_input(INPUT_POST, 'password');
 
-    // if($row=mysqli_fetch_assoc($polaczenie->query($check_p))){
-    //     if(password_verify($haslo, $row['haslo'])){
-    //        $proper_password = $row['haslo'];
-    //     }else{
-    //         header("Location: index.php?error=wronginputathere");
-    //         exit();
-    //     }
-        
-    // }
+			$query = $db->prepare("SELECT * FROM czytelnik WHERE email=:email");
+			$query->bindValue(':email', $email, PDO::PARAM_STR);
+			$query->execute();
 
-    $sql = "SELECT email, haslo, imie, nazwisko FROM czytelnik WHERE email=? and haslo=?";
+			$result = $query->fetch();
+			
+			if($query->rowCount()>0)
+			{			
+				if(password_verify($password, $result["haslo"])){
+					$_SESSION['zalogowany'] = true;	
+					$_SESSION['email'] = $result['email'];
+					$_SESSION['imie'] = $result['imie'];
+					$_SESSION['nazwisko'] = $result['nazwisko'];
 
-    $stmt = mysqli_stmt_init($polaczenie);
+					header('Location: index.php');
+				} else{
+					$_SESSION['err-login'] = '<div class="invalid-feedback">Nieprawidłowy login lub hasło</div>';
+					header('Location: login_form.php');
+					}
+			} else {
+				
+				$_SESSION['err-login'] = '<div class="invalid-feedback>Nieprawidłowy login lub hasło</div>"';
+				header('Location: login_form.php');
 
+			}
+		}	catch (PDOException $e) {
+				echo "<span style='color: red;'>Wystąpił błąd, spróbuj ponownie później</span><br>";
+				echo "A tak na serio to: ".$e;
+			}
 
-    if(!mysqli_stmt_prepare($stmt, $sql)){
-        header("Location: login_form.html?error=sqlerror&email=$email&haslo=$haslo;");
-        exit();
-    } else{
-
-        mysqli_stmt_bind_param($stmt, 'ss', $email, $haslo);
-        mysqli_stmt_execute($stmt);
-
-        $result = mysqli_stmt_get_result($stmt);
-
-        if($row = mysqli_fetch_assoc($result)){
-        
-        session_start();
-        
-        $_SESSION['imie'] = $row['imie'];
-        $_SESSION['nazwisko'] = $row['nazwisko'];
-        $_SESSION['email'] = $email;
-
-        header('Location: udane_logowanie.php');
-        exit();
-        }
-        else {
-            header("Location: index.php?error=wronginput");
-        }
-    }
-         $polaczenie->close();
-}
-
-
-
+	
+	
 ?>

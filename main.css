@@ -254,6 +254,60 @@ h1
 	text-align: center;
 }
 
+
+/* Katalog książek */
+
+
+.filters_pane{
+    background-color: #5f236e;
+    
+}
+
+
+
+.book_tab a{
+    width: 140px;
+}
+
+.cover img{
+    width: 90%;
+}
+
+.h3{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.h4{
+    font-size: 18px;
+}
+
+.description{
+    font-size: 15px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* header{
     width: 100%;
     background: #7F6285;
