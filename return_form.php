@@ -33,9 +33,20 @@
                     <a href="katalog.php" class="nav-link">Katalog książek</a>
                 </li>
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Wypożyczenia i zwroty</a>
-                </li>
+                <?php
+                    if(isset($_SESSION["zalogowany"]) && $_SESSION['uprawnienia']=='pracownik'){
+                        echo "
+                        <li class='nav-item dropdown'>
+                            <a href='#' class='nav-link dropdown-toggl' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false' id='submenu'>Wypożyczenia i zwroty</a>
+                           
+                            <div class='dropdown-menu' aria-labelledby='submenu'>
+                                <a href='lend_form.php' class='dropdown-item'>Wypożyczenia</a>
+                                <div class='dropdown-divider'></div>
+                                <a href='return_form.php' class='dropdown-item'>Zwroty</a>
+                            </div>
+                        </li>";
+                    }
+                ?>
 
                 <li class="nav-item">
                     <a href="register.php" class="nav-link">Rejestracja</a>
@@ -43,7 +54,6 @@
 
 
                 <?php
-
                     if(isset($_SESSION["zalogowany"])){
                         echo "
                         <li class='nav-item dropdown'>
@@ -64,7 +74,6 @@
                             </li>
                         ";
                     }
-
                 ?>
             </ul>
 
@@ -73,53 +82,23 @@
 
 </header>
 <main>
-    <section>
-        <div class="container">
-            <form action="login.php" method="POST">
-                <div class="row mt-4">
+    <section class="main_page">
 
-                <?php
-                    if(isset($_SESSION["err-public"])){
-                        echo "<div class='alert alert-warning col-11 mx-auto mt-4' role='alert'>".
-                        $_SESSION["err-public"].
-                        "</div>";
-                        unset($_SESSION["err-public"]);
-                    }
-                    if(isset($_SESSION["err-dev"])){
-                        echo "<div class='alert alert-info col-11 mx-auto mt-2' role='alert'>".
-                        $_SESSION["err-dev"].
-                        "</div>";
-                        unset($_SESSION["err-dev"]);
-                    }
-                    ?>
-
-                    <div class="form-group col-12">
-                        <label for="email">E-mail:</label>
-                        <input type="email" name="email" id="email" class="form-control <?php if(isset($_SESSION["err-login"])){
-                            echo "is-invalid";
-                        } ?>">
-                    </div>
-                    <div class="form-group col-12">
-                        <label for="password">Hasło:</label>
-                        <input type="password" name="password" id="password" class="form-control <?php if(isset($_SESSION["err-login"])){
-                            echo "is-invalid";
-                        } ?>">
-                        <?php if(isset($_SESSION["err-login"])){
-                            echo $_SESSION["err-login"];
-                            unset($_SESSION["err-login"]);
-                        } ?>
-                    </div>
-                    <input type="submit" value="Zaloguj się" class="btn btn-success mx-auto d-block mt-4">
-                </div>
-            </form>
+        <div class="container mt-4 bg-light text-body">
+            <header>
+                <h1>Zwroty</h1>
+            </header>
         </div>
+ 
     </section>
+
 </main>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
 	</script>
 	<script src="bootstrap.min.js"></script>
+
 
 </body>
 </html>

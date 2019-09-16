@@ -286,8 +286,12 @@ h1
     font-size: 15px;
 }
 
+/* Wypożyczenia i zwroty */
 
-
+.lend_form{
+    display: table;
+    width: 400px;
+}
 
 
 

@@ -40,6 +40,32 @@
                 <li class="nav-item">
                     <a href="register.php" class="nav-link">Rejestracja</a>
                 </li>
+
+
+                <?php
+
+                    if(isset($_SESSION["zalogowany"])){
+                        echo "
+                        <li class='nav-item dropdown'>
+                            <a href='#' class='nav-link dropdown-toggl' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false' id='submenu'>".
+                            $_SESSION['imie']." ".$_SESSION['nazwisko']."</a>
+                           
+                            <div class='dropdown-menu' aria-labelledby='submenu'>
+                                <a href='user-lends.php' class='dropdown-item'>Moje wypożyczenia</a>
+                                <a href='settings.php' class='dropdown-item'>Ustawiena konta</a>
+                                <div class='dropdown-divider'></div>
+                                <a href='logout.php' class='dropdown-item'>Wyloguj się </a>
+                            </div>
+                        </li>";
+                    }else {
+                        echo "
+                            <li class='nav-item'>
+                                <a href='login_form.php' class='nav-link'>Logowanie</a>
+                            </li>
+                        ";
+                    }
+
+                ?>
             </ul>
 
         </div>
@@ -50,15 +76,12 @@
     <section class="main_page">
 
         <div class="container mt-4 bg-light text-body">
-            <header>
-                <h1>Katalog książek</h1>
-            </header>
 
             <main>
 
                 <div class="row">
                 
-                    <div class="filters_pane col-12 p-2 mt-4">
+                    <div class="filters_pane col-12 p-2">
                         
                         <form method="get" class="form-inline float-left">
                             <select name="asc_desc" id="asc_desc" class="form-control mx-2">

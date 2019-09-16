@@ -15,7 +15,7 @@
 			$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 			$password = filter_input(INPUT_POST, 'password');
 
-			$query = $db->prepare("SELECT * FROM czytelnik WHERE email=:email");
+			$query = $db->prepare("SELECT * FROM uzytkownik WHERE email=:email");
 			$query->bindValue(':email', $email, PDO::PARAM_STR);
 			$query->execute();
 
@@ -28,6 +28,8 @@
 					$_SESSION['email'] = $result['email'];
 					$_SESSION['imie'] = $result['imie'];
 					$_SESSION['nazwisko'] = $result['nazwisko'];
+					$_SESSION['uprawnienia'] = $result['uprawnienia'];
+
 
 					header('Location: index.php');
 				} else{

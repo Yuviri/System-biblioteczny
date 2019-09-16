@@ -33,9 +33,14 @@
                     <a href="katalog.php" class="nav-link">Katalog książek</a>
                 </li>
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Wypożyczenia i zwroty</a>
-                </li>
+                <?php
+                    if(isset($_SESSION["zalogowany"]) && $_SESSION['uprawnienia']=='pracownik'){
+                        echo "
+                        <li class='nav-item'>
+                            <a href='lend_form.php' class='nav-link'>Wypożyczenia i zwroty</a>
+                        </li>";
+                    }
+                ?>
 
                 <li class="nav-item">
                     <a href="register.php" class="nav-link">Rejestracja</a>
@@ -43,7 +48,6 @@
 
 
                 <?php
-
                     if(isset($_SESSION["zalogowany"])){
                         echo "
                         <li class='nav-item dropdown'>
@@ -64,7 +68,6 @@
                             </li>
                         ";
                     }
-
                 ?>
             </ul>
 
