@@ -10,7 +10,7 @@
         $egzemplarz = filter_input(INPUT_POST, 'egzemplarz', FILTER_VALIDATE_INT);
         $od = filter_input(INPUT_POST, 'od');
         $do = filter_input(INPUT_POST, 'do');
-        $pracownik = $_SESSION['email'];
+        $pracownik = $_SESSION['id'];
 
         // Sprawdzanie czy konkretny egzemplarz nie jest już wypożyczony
 
@@ -23,7 +23,8 @@
           $_SESSION['existing-err'] = "<div class='alert alert-warning'>Dany egzemplarz jest już wypożyczony</div>";
           header("Location: lend_form.php");
         } else {
-          $insert = $db->query("INSERT INTO wypozyczenie VALUES(NULL, '$czytelnik', '$pracownik', '$egzemplarz', '$od', '$do')");
+          $db->query("INSERT INTO wypozyczenie VALUES(NULL, '$czytelnik', '$pracownik', '$egzemplarz', '$od', '$do')");
+          $db->query("UPDATE egzemplarz SET czy_wyp=1 WHERE id_egzemplarza='$egzemplarz'");
           $_SESSION['success'] = "<div class='alert alert-success'>Wypozyczono egzemplarz</div>";
           header("Location: lend_form.php");
         }

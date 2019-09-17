@@ -54,6 +54,7 @@
 
 
                 <?php
+
                     if(isset($_SESSION["zalogowany"])){
                         echo "
                         <li class='nav-item dropdown'>
@@ -74,6 +75,7 @@
                             </li>
                         ";
                     }
+
                 ?>
             </ul>
 
@@ -84,11 +86,70 @@
 <main>
     <section class="main_page">
 
-        <div class="container mt-4 bg-light text-body">
-            <header>
-                <h1>Strona główna projektu dyplomowego</h1>
-                <p>Tu coś będzie w niedalekiej przyszłości.</p>
-            </header>
+        <div class="container mt-2 bg-light text-body">
+
+            <main>
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light user_subnav">
+                
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a href="user_lends.php" class="nav-link active">Aktywne</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a href="user_lends_history.php" class="nav-link">Historia</a>
+                    </li>
+                </ul>
+                
+            </nav>
+<!-- 
+                <div class="book_tab_min row border p-2">
+                    
+                    <div class="book_info col-4 text-left my-auto">
+                        <h2 class="h3 text-left mt-1">Lewa Ręka Boga</h2>
+                    </div>
+
+                    <div class="book_info col-4 text-left my-auto">
+                        <h3 class="h4 text-left">Wypożyczone przez: Anna Kowalska</h3>
+                    </div>
+
+                    <div class="book_info col-4 text-left my-auto">
+                        <h3 class="h4 text-left">Data wypożyczenia: 2019-03-12</h3>
+                        <h3 class="h4 text-left">Data zwrotu: 2019-04-12</h3>
+                    </div>
+                    
+                </div> -->
+                <?php
+                    require_once "database.php";
+
+                    $email = $_SESSION['email'];
+
+                    $query = $db->query("SELECT wypozyczenie.id_wyp, pracownik.imie, pracownik.nazwisko, wypozyczenie.od, wypozyczenie.do, szczegoly.nazwa FROM wypozyczenie, pracownik, szczegoly, egzemplarz WHERE wypozyczenie.czytelnik='$email' AND wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN");
+                    $result = $query->fetchAll();
+
+                    foreach ($result as $row => $value) {
+                    echo '    
+                        <div class="book_tab_min row border p-2">
+                        
+                            <div class="book_info col-4 text-left my-auto">
+                                <h2 class="h3 text-left mt-1">'.$value["nazwa"].'</h2>
+                            </div>
+
+                            <div class="book_info col-4 text-left my-auto">
+                                <h3 class="h4 text-left">Wypożyczone przez: '.$value['imie'].' '.$value['nazwisko'].'</h3>
+                            </div>
+
+                            <div class="book_info col-4 text-left my-auto">
+                                <h3 class="h4 text-left">Data wypożyczenia: '.$value['od'].'</h3>
+                                <h3 class="h4 text-left">Data zwrotu: '.$value['do'].'</h3>
+                            </div>
+                        
+                        </div>
+                        ';
+                    }
+                ?>
+            </main>
         </div>
  
     </section>

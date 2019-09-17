@@ -52,7 +52,7 @@ if(isset($_POST["email"])){
     require_once "database.php";
 
     try {
-        $query = $db->prepare("SELECT email FROM czytelnik WHERE email=:email");
+        $query = $db->prepare("SELECT email FROM uzytkownik WHERE email=:email");
         $query->bindValue(':email', $email, PDO::PARAM_STR);
         $query->execute();
 
@@ -62,7 +62,7 @@ if(isset($_POST["email"])){
         }
 
         if($clean){
-            $ins = $db->query("INSERT INTO czytelnik VALUES('$email', '$password_h', '$name', '$surname', '$adress', '$gender', '$date', '$phone')");
+            $ins = $db->query("INSERT INTO uzytkownik VALUES('$email', '$password_h', '$name', '$surname', 'czytelnik', '$adress', '$gender', '$date', '$phone')");
             
             if($ins){
                 $_SESSION["err-success"] = "Rejestracja przebiegła pomyślnie. Możesz zalogować się na swoje konto";
@@ -122,9 +122,20 @@ if(isset($_POST["email"])){
                     <a href="katalog.php" class="nav-link">Katalog książek</a>
                 </li>
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Wypożyczenia i zwroty</a>
-                </li>
+                 <?php
+                    if(isset($_SESSION["zalogowany"]) && $_SESSION['uprawnienia']=='pracownik'){
+                        echo "
+                        <li class='nav-item dropdown'>
+                            <a href='#' class='nav-link dropdown-toggl' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false' id='submenu'>Wypożyczenia i zwroty</a>
+                           
+                            <div class='dropdown-menu' aria-labelledby='submenu'>
+                                <a href='lend_form.php' class='dropdown-item'>Wypożyczenia</a>
+                                <div class='dropdown-divider'></div>
+                                <a href='return_form.php' class='dropdown-item'>Zwroty</a>
+                            </div>
+                        </li>";
+                    }
+                ?>
 
                 <li class="nav-item">
                     <a href="register.php" class="nav-link">Rejestracja</a>
@@ -140,7 +151,7 @@ if(isset($_POST["email"])){
                             $_SESSION['imie']." ".$_SESSION['nazwisko']."</a>
                            
                             <div class='dropdown-menu' aria-labelledby='submenu'>
-                                <a href='user-lends.php' class='dropdown-item'>Moje wypożyczenia</a>
+                                <a href='user_lends.php' class='dropdown-item'>Moje wypożyczenia</a>
                                 <a href='settings.php' class='dropdown-item'>Ustawiena konta</a>
                                 <div class='dropdown-divider'></div>
                                 <a href='logout.php' class='dropdown-item'>Wyloguj się </a>
@@ -163,32 +174,31 @@ if(isset($_POST["email"])){
 </header>
 <main>
     <section>
-        <div class="container">
+        <div class="container register_control mt-1 mx-auto bg-light text-body p-4">
             <form method="POST">
-                <div class="row">
-
-                    
-
-                    <?php
-                        if(isset($_SESSION["err-success"])){
-                            echo "<div class='alert alert-success col-11 mx-auto mt-4' role='alert'>".
-                            $_SESSION["err-success"].
+                <?php
+                    if(isset($_SESSION["err-success"])){
+                        echo "<div class='alert alert-success col-11 mx-auto mt-4' role='alert'>".
+                        $_SESSION["err-success"].
+                    "</div>";
+                    unset($_SESSION["err-success"]);
+                    }
+                    if(isset($_SESSION["err-public"])){
+                        echo "<div class='alert alert-warning col-11 mx-auto mt-4' role='alert'>".
+                        $_SESSION["err-public"].
                         "</div>";
-                        unset($_SESSION["err-success"]);
-                        }
-                        if(isset($_SESSION["err-public"])){
-                            echo "<div class='alert alert-warning col-11 mx-auto mt-4' role='alert'>".
-                            $_SESSION["err-public"].
-                           "</div>";
-                           unset($_SESSION["err-public"]);
-                        }
-                        if(isset($_SESSION["err-dev"])){
-                            echo "<div class='alert alert-info col-11 mx-auto mt-2' role='alert'>".
-                            $_SESSION["err-dev"].
-                           "</div>";
-                           unset($_SESSION["err-dev"]);
-                        }
-                    ?>
+                        unset($_SESSION["err-public"]);
+                    }
+                    if(isset($_SESSION["err-dev"])){
+                        echo "<div class='alert alert-info col-11 mx-auto mt-2' role='alert'>".
+                        $_SESSION["err-dev"].
+                        "</div>";
+                        unset($_SESSION["err-dev"]);
+                    }
+                ?>
+                
+                
+                <div class="row">       
 
                     <div class="form-group col-12 mt-4">
                         <label for="email">E-mail:</label>
@@ -200,7 +210,7 @@ if(isset($_POST["email"])){
                         unset($_SESSION["err-email"]); 
                         ?></div>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-12">
                         <label for="password1">Hasło:</label>
                         <input type="password" name="password1" id="password1" class="form-control <?php 
                             if(isset($_SESSION["err-pass"])) echo "is-invalid";
@@ -209,7 +219,7 @@ if(isset($_POST["email"])){
                         if(isset($_SESSION["err-pass"])) echo $_SESSION["err-pass"]; 
                         ?></div>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-12">
                         <label for="password2">Powtórz hasło:</label>
                         <input type="password" name="password2" id="password2" class="form-control <?php 
                             if(isset($_SESSION["err-pass"])) echo "is-invalid";
@@ -224,11 +234,11 @@ if(isset($_POST["email"])){
                         <label for="surname">Nazwisko</label>
                         <input type="text" name="surname" id="surname" class="form-control">
                     </div>
-                    <div class="form-group col-md-4">
+                    <!-- <div class="form-group col-12">
                         <label for="street">Ulica</label>
                         <input type="text" name="street" id="street" class="form-control">
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <label for="postal1" class="w-100">Kod pocztowy</label>
                         <input type="text" name="postal1" id="postal1" class="form-control col-3  d-inline-block <?php 
                             if(isset($_SESSION["err-postal"])) echo "is-invalid";
@@ -242,27 +252,27 @@ if(isset($_POST["email"])){
                         unset($_SESSION["err-postal"]);
                         ?></div>
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <label for="city">Miasto</label>
                         <input type="text" name="city" id="city" class="form-control">
-                    </div>
-                    <div class="form-group col-md-4">
+                    </div> -->
+                    <div class="form-group col-md-6">
                         <label for="gender">Płeć</label>
                         <select name="gender" id="gender" class="form-control">
                             <option value="M">Mężczyzna</option>
                             <option value="K">Kobieta</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-4">
+                    <!-- <div class="form-group col-md-6">
                         <label for="date">Data urodzenia</label>
                         <input type="date" name="date" id="date" class="form-control">
-                    </div>
-                    <div class="form-group col-md-4">
+                    </div> -->
+                    <div class="form-group col-md-6">
                         <label for="phone">Telefon</label>
                         <input type="text" name="phone" id="phone" class="form-control" maxlength="9">
                     </div>
                     
-                    <input type="submit" value="Zaloguj się" class="btn btn-success mx-auto d-block mt-4">
+                    <input type="submit" value="Zarejestruj się" class="btn btn-success mx-auto d-block mt-4">
                 </div>
             </form>
         </div>

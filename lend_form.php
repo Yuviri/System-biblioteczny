@@ -1,5 +1,12 @@
 <?php
     session_start();
+
+    // Pobranie daty serwera
+    $today = new DateTime();
+    $estimated = new DateTime();
+    $today = $today->format("Y-m-d");
+    $estimated = $estimated->add(new DateInterval("P01M"));
+    $estimated = $estimated->format("Y-m-d");
 ?>
 
 <!DOCTYPE html>
@@ -33,11 +40,17 @@
                     <a href="katalog.php" class="nav-link">Katalog książek</a>
                 </li>
 
-                <?php
+                 <?php
                     if(isset($_SESSION["zalogowany"]) && $_SESSION['uprawnienia']=='pracownik'){
                         echo "
-                        <li class='nav-item'>
-                            <a href='lend_form.php' class='nav-link'>Wypożyczenia i zwroty</a>
+                        <li class='nav-item dropdown'>
+                            <a href='#' class='nav-link dropdown-toggl' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false' id='submenu'>Wypożyczenia i zwroty</a>
+                           
+                            <div class='dropdown-menu' aria-labelledby='submenu'>
+                                <a href='lend_form.php' class='dropdown-item'>Wypożyczenia</a>
+                                <div class='dropdown-divider'></div>
+                                <a href='return_form.php' class='dropdown-item'>Zwroty</a>
+                            </div>
                         </li>";
                     }
                 ?>
@@ -55,7 +68,7 @@
                             $_SESSION['imie']." ".$_SESSION['nazwisko']."</a>
                            
                             <div class='dropdown-menu' aria-labelledby='submenu'>
-                                <a href='user-lends.php' class='dropdown-item'>Moje wypożyczenia</a>
+                                <a href='user_lends.php' class='dropdown-item'>Moje wypożyczenia</a>
                                 <a href='settings.php' class='dropdown-item'>Ustawiena konta</a>
                                 <div class='dropdown-divider'></div>
                                 <a href='logout.php' class='dropdown-item'>Wyloguj się </a>
@@ -107,12 +120,12 @@
                         
                         <div class="form-group col-12 text-left">
                             <label for="od">Data wypożyczenia</label>
-                            <input type="date" id="od" name="od" class="form-control">
+                            <input type="date" id="od" name="od" class="form-control" value="<?= $today ?>">
                         </div>
                         
                         <div class="form-group col-12 text-left">
                             <label for="do">Przybliżona data zwrotu</label>
-                            <input type="date" id="do" name="do" class="form-control">
+                            <input type="date" id="do" name="do" class="form-control" value="<?= $estimated ?>">
                         </div>
 
                         <input type="submit" value="Zatwierdź" class="btn btn-primary mx-auto mb-5">
@@ -123,6 +136,7 @@
         </div>
  
     </section>
+
 
 </main>
 

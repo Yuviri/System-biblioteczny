@@ -259,10 +259,9 @@ h1
 
 
 .filters_pane{
-    background-color: #5f236e;
+    background-color: #78238d;
     
 }
-
 
 
 .book_tab a{
@@ -294,17 +293,31 @@ h1
 }
 
 
+.user_subnav{
+    font-size: 24px;
+}
+
+.user_subnav a{
+    width: 200px;
+}
 
 
 
 
+/* Rejestracja */
+
+.register_control{
+    width: 700px;
+    border-radius: 5px;
+}
 
 
 
-
-
-
-
+@media only screen and (max-width: 576px) {
+    .register_control{
+        width: 400px;
+    }
+  }
 
 
 

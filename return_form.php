@@ -61,7 +61,7 @@
                             $_SESSION['imie']." ".$_SESSION['nazwisko']."</a>
                            
                             <div class='dropdown-menu' aria-labelledby='submenu'>
-                                <a href='user-lends.php' class='dropdown-item'>Moje wypożyczenia</a>
+                                <a href='user_lends.php' class='dropdown-item'>Moje wypożyczenia</a>
                                 <a href='settings.php' class='dropdown-item'>Ustawiena konta</a>
                                 <div class='dropdown-divider'></div>
                                 <a href='logout.php' class='dropdown-item'>Wyloguj się </a>
