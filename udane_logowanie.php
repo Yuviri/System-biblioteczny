@@ -30,7 +30,7 @@
 
 <header>
 
-    <nav class="navbar navbar-dark navbar-expand-lg">
+    <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
         <a href="index.php" class="navbar-brand d-inline-block">System Biblioteczny</a>
         
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Przełącznik nawigacji">

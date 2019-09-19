@@ -2,6 +2,8 @@
 
 	session_start();
 	
+	//Sprawdzenie, czy użytkownik poprawnie dostał się do skryptu
+
 	if ((!isset($_POST['email'])) || (!isset($_POST['password'])))
 	{
 		header('Location: login-form.php');
@@ -12,8 +14,12 @@
 
 	try {
 
+			//Pobranie wartości z formularza
+
 			$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 			$password = filter_input(INPUT_POST, 'password');
+
+			//Przygotowanie zapytań do bazy
 
 			$queryU = $db->prepare("SELECT * FROM uzytkownik WHERE email=:email");
 			$queryU->bindValue(':email', $email, PDO::PARAM_STR);
@@ -26,6 +32,8 @@
 			$resultU = $queryU->fetch();
 			$resultE = $queryE->fetch();
 			
+			//Sprawdzanie istnienia użytkownika
+
 			if($queryU->rowCount()>0)
 			{			
 				if(password_verify($password, $resultU["haslo"])){
@@ -41,6 +49,9 @@
 					$_SESSION['err-login'] = '<div class="invalid-feedback">Nieprawidłowy login lub hasło</div>';
 					header('Location: login_form.php');
 					}
+
+			//Sprawdzanie istnienia pracownika
+
 			} elseif($queryE->rowCount()>0) {
 				
 				if(password_verify($password, $resultE["haslo"])){
@@ -60,13 +71,13 @@
 
 			} else {
 				
-				$_SESSION['err-login'] = '<div class="invalid-feedback>Nieprawidłowy login lub hasło</div>"';
+				$_SESSION['err-login'] = '<div class="invalid-feedback">Nieprawidłowy login lub hasło</div>';
 				header('Location: login_form.php');
 
 			}
 		}	catch (PDOException $e) {
 				echo "<span style='color: red;'>Wystąpił błąd, spróbuj ponownie później</span><br>";
-				echo "A tak na serio to: ".$e;
+				echo "Dev description: ".$e;
 			}
 
 	

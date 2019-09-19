@@ -8,10 +8,12 @@ if(isset($_POST["email"])){
 
     $email = $_POST["email"];
     $emailB = filter_var($email, FILTER_SANITIZE_EMAIL);
+    $_SESSION['fill-email'] = $email;
 
     if(!filter_var($email, FILTER_VALIDATE_EMAIL) || ($email!=$emailB)){
         $clean = false;
         $_SESSION["err-email"] = "Niepoprawny adres email";
+        unset($_SESSION['fill-email']);
     }
 
     $password1 = htmlentities($_POST["password1"]);
@@ -30,42 +32,59 @@ if(isset($_POST["email"])){
 
     $password_h = password_hash($password1, PASSWORD_DEFAULT);
 
-    $name = $_POST["name"];
-    $surname = $_POST["surname"];
+    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+    $surname = filter_input(INPUT_POST, 'surname', FILTER_SANITIZE_STRING);
+    $_SESSION['fill-name'] = $name;
+    $_SESSION['fill-surname'] = $surname;
 
-    $street = $_POST["street"];
-    $postal1 = $_POST["postal1"];
-    $postal2 = $_POST["postal2"];
-    $city = $_POST["city"];
 
-    if(!ctype_digit($postal1) || !ctype_digit($postal2)){
-        $clean = false;
-        $_SESSION["err-postal"] = "Kod pocztowy jest nieprawidłowy";
-    }
+    // $street = $_POST["street"];
+    // $postal1 = $_POST["postal1"];
+    // $postal2 = $_POST["postal2"];
+    // $city = $_POST["city"];
 
-    $adress = $street." ".$postal1."-".$postal2." ".$city;
+    // if(!ctype_digit($postal1) || !ctype_digit($postal2)){
+    //     $clean = false;
+    //     $_SESSION["err-postal"] = "Kod pocztowy jest nieprawidłowy";
+    // }
+
+    // $adress = $street." ".$postal1."-".$postal2." ".$city;
 
     $gender = $_POST["gender"];
-    $date = $_POST["date"];
-    $phone = $_POST["phone"];
-    
+    $_SESSION['fill-gender'] = $gender;
+    // $date = $_POST["date"];
+    $phone =  filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_STRING);
+    $_SESSION['fill-phone'] = $phone;
+
     require_once "database.php";
 
     try {
-        $query = $db->prepare("SELECT email FROM uzytkownik WHERE email=:email");
-        $query->bindValue(':email', $email, PDO::PARAM_STR);
-        $query->execute();
+        // Sprawdzanie czy istnieje konto o podanym mailu
+        $queryU = $db->prepare("SELECT email FROM uzytkownik WHERE email=:email");
+        $queryU->bindValue(':email', $email, PDO::PARAM_STR);
+        $queryU->execute();
 
-        if($query->rowCount()>0){
+        $queryE = $db->prepare("SELECT email FROM pracownik WHERE email=:email");
+        $queryE->bindValue(':email', $email, PDO::PARAM_STR);
+        $queryE->execute();
+
+        if($queryU->rowCount()>0 || $queryE->rowCount()>0){
             $clean = false;
             $_SESSION["err-email"] = "Istnieje już konto o podanym adresie e-mail";
         }
+        
 
         if($clean){
-            $ins = $db->query("INSERT INTO uzytkownik VALUES('$email', '$password_h', '$name', '$surname', 'czytelnik', '$adress', '$gender', '$date', '$phone')");
+            $ins = $db->query("INSERT INTO uzytkownik VALUES('$email', '$password_h', '$name', '$surname', '$gender', '$phone')");
             
             if($ins){
                 $_SESSION["err-success"] = "Rejestracja przebiegła pomyślnie. Możesz zalogować się na swoje konto";
+               
+                if(isset($_SESSION['fill-email'])) unset($_SESSION['fill-email']);
+                if(isset($_SESSION['fill-name'])) unset($_SESSION['fill-name']);
+                if(isset($_SESSION['fill-surname'])) unset($_SESSION['fill-surname']);
+                if(isset($_SESSION['fill-phone'])) unset($_SESSION['fill-phone']);
+                if(isset($_SESSION['fill-gender'])) unset($_SESSION['fill-gender']);
             } else {
                 throw new PDOException();
             }
@@ -75,18 +94,7 @@ if(isset($_POST["email"])){
         $_SESSION["err-public"] = "Wystąpiły utrudnienia w działaniu serwisu. Przepraszamy za utrudnienia oraz prosimy spróbować ponownie później";
         $_SESSION["err-dev"] = $e;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 }
     
 ?>
@@ -108,7 +116,7 @@ if(isset($_POST["email"])){
 
 <header>
 
-    <nav class="navbar navbar-dark navbar-expand-lg">
+    <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
         <a href="index.php" class="navbar-brand d-inline-block">System Biblioteczny</a>
         
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Przełącznik nawigacji">
@@ -202,7 +210,7 @@ if(isset($_POST["email"])){
 
                     <div class="form-group col-12 mt-4">
                         <label for="email">E-mail:</label>
-                        <input type="email" name="email" id="email" class="form-control <?php 
+                        <input type="email" name="email" id="email" value="<?=isset($_SESSION['fill-email']) ? $_SESSION['fill-email'] : ''?>" class="form-control <?php 
                             if(isset($_SESSION["err-email"])) echo "is-invalid";
                         ?>">
                         <div class="invalid-feedback"><?php 
@@ -228,11 +236,11 @@ if(isset($_POST["email"])){
                     </div>
                     <div class="form-group col-md-6">
                         <label for="name">Imię</label>
-                        <input type="text" name="name" id="name" class="form-control">
+                        <input type="text" name="name" value="<?=isset($_SESSION['fill-name']) ? $_SESSION['fill-name'] : ''?>" id="name" class="form-control">
                     </div>
                     <div class="form-group col-md-6">
                         <label for="surname">Nazwisko</label>
-                        <input type="text" name="surname" id="surname" class="form-control">
+                        <input type="text" name="surname" value="<?=isset($_SESSION['fill-surname']) ? $_SESSION['fill-surname'] : ''?>" id="surname" class="form-control">
                     </div>
                     <!-- <div class="form-group col-12">
                         <label for="street">Ulica</label>
@@ -259,8 +267,8 @@ if(isset($_POST["email"])){
                     <div class="form-group col-md-6">
                         <label for="gender">Płeć</label>
                         <select name="gender" id="gender" class="form-control">
-                            <option value="M">Mężczyzna</option>
-                            <option value="K">Kobieta</option>
+                            <option value="M" <?=(isset($_SESSION['fill-gender']) && $_SESSION['fill-gender']=="M") ? 'selected="selected"' : ''?>>Mężczyzna</option>
+                            <option value="K" <?=(isset($_SESSION['fill-gender']) && $_SESSION['fill-gender']=="K") ? 'selected="selected"' : ''?>>Kobieta</option>
                         </select>
                     </div>
                     <!-- <div class="form-group col-md-6">
@@ -269,10 +277,19 @@ if(isset($_POST["email"])){
                     </div> -->
                     <div class="form-group col-md-6">
                         <label for="phone">Telefon</label>
-                        <input type="text" name="phone" id="phone" class="form-control" maxlength="9">
+                        <input type="text" name="phone" value="<?=isset($_SESSION['fill-phone']) ? $_SESSION['fill-phone'] : ''?>" id="phone" class="form-control" maxlength="11">
                     </div>
                     
                     <input type="submit" value="Zarejestruj się" class="btn btn-success mx-auto d-block mt-4">
+
+                    <?php
+                        if(isset($_SESSION['fill-email'])) unset($_SESSION['fill-email']);
+                        if(isset($_SESSION['fill-name'])) unset($_SESSION['fill-name']);
+                        if(isset($_SESSION['fill-surname'])) unset($_SESSION['fill-surname']);
+                        if(isset($_SESSION['fill-phone'])) unset($_SESSION['fill-phone']);
+                        if(isset($_SESSION['fill-gender'])) unset($_SESSION['fill-gender']);
+                    ?>
+
                 </div>
             </form>
         </div>

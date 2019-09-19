@@ -4,16 +4,10 @@
   } */
 
 body{
-    background-color: #2F3336;
-    color: #efefef;
+    background-color: #e3e3e3;
     font-family: 'Open Sans', sans-serif;
     font-size: 17px;
 }
-
-.navbar{
-    background-color: #5f236e;
-}
-
 
 
 h1
@@ -259,10 +253,13 @@ h1
 
 
 .filters_pane{
-    background-color: #78238d;
+    background-color: #212529;
     
 }
 
+.results_wrapper{
+    min-height: 200px;
+}
 
 .book_tab a{
     width: 140px;
@@ -318,143 +315,3 @@ h1
         width: 400px;
     }
   }
-
-
-
-
-
-
-
-/* header{
-    width: 100%;
-    background: #7F6285;
-}
-
-.header_up{
-    height: 60px;
-}
-
-.header_up h1{
-    text-align: center;
-    margin: 0;
-    padding-top: 9px;
-    font-size: 36px;
-} */
-
-/* .header_up a{
-    text-decoration: none;
-    color: black;
-}
-
-.header_down{
-    height: 40px;
-}
-
-.header_down ul{
-    list-style: none;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-.header_down ul li{
-    display: inline-block;
-    width: calc(20% - 4px);
-    height: 36px;
-    border: dashed 2px white;
-    margin: 0;
-    margin-left: -4px;
-    transition: background-color 0.2s ease-in-out;
-}
-
-.header_down ul > :first-child{
-    margin-left: 1px;
-}
-
-.header_down a{
-    height: 32px;
-    text-decoration: none;
-    text-align: center;
-    font-size: 22px;
-    padding: 4px;
-    display: block;
-    color: black;
-}
-
-.header_down ul li:hover{
-    background: #744280;
-} */
-
-/* .container
-{
-    width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: white;
-    min-height: 900px;
-    margin-top: 5px;
-    
-} */
-
-/* .login_form{
-    width: 500px;
-    margin: auto;
-    margin-top: 15px;
-}
-
-
-.table_label{
-    text-align: right;
-    width: 35%;
-    font-size: 24px;
-}
-
-.table_input input[type=text]{
-    margin-left: 10px;
-}
-
-.table_input input[type=password]{
-    margin-left: 10px;
-}
-
-
-.table_submit{
-    text-align: center;
-} */
-
-/* input[type=text], input[type=date], input[type=password] {
-    padding: 6px 7px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border-radius: 5px;
-    background-color: aliceblue;
-  }
-
-input[type=text]:focus, input[type=password]:focus {
-    background-color: lightblue;
-    outline: none;
-  }
-
-input[type=submit]
-{
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  padding: 6px 12px;
-  text-decoration: none;
-  margin: 4px 2px;
-  cursor: pointer;
-  font-size: 22px;
-  border-radius: 5px;
-}
-
-input[type=submit]:hover
-{
-  background-color: rgb(36, 114, 39);
-  
-}
-
-.searchbar{
-    width: 400px;
-    margin-left: 5px;
-} */
