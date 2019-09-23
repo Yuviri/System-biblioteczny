@@ -1,7 +1,5 @@
 <?php
     session_start();
-    require_once 'includes/get_date.inc.php';
-      
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +33,7 @@
                     <a href="katalog.php" class="nav-link">Katalog książek</a>
                 </li>
 
-                <?php
+                 <?php
                     if(isset($_SESSION["zalogowany"]) && $_SESSION['uprawnienia']=='pracownik'){
                         echo "
                         <li class='nav-item dropdown'>
@@ -56,6 +54,7 @@
 
 
                 <?php
+
                     if(isset($_SESSION["zalogowany"])){
                         echo "
                         <li class='nav-item dropdown'>
@@ -76,6 +75,7 @@
                             </li>
                         ";
                     }
+
                 ?>
             </ul>
 
@@ -86,59 +86,74 @@
 <main>
     <section class="main_page">
 
-        <div class="container mt-4 bg-light text-body">
-            <header>
-                <h1>Zwroty</h1>
-            </header>
-            <article class="lend_form mx-auto">
-                <?=isset($_SESSION['public-err']) ? $_SESSION['public-err'] : ""?>
-                <?=isset($_SESSION['dev-err']) ? $_SESSION['dev-err'] : ""?>
-                <?=isset($_SESSION['success']) ? $_SESSION['success'] : ""?>
-                <?=isset($_SESSION['nonexisting-err']) ? $_SESSION['nonexisting-err'] : ""?>
-                <?php 
-                if (isset($_SESSION['public-err'])) unset($_SESSION['public-err']);
-                if (isset($_SESSION['dev-err'])) unset($_SESSION['dev-err']);
-                if (isset($_SESSION['success'])) unset($_SESSION['success']);
-                if (isset($_SESSION['nonexisting-err'])) unset($_SESSION['nonexisting-err']);
-                ?>
-                <form action="return.php" method="post">
-                    <!-- <div class="row">
-                        <div class="form-group col-12 text-left">
-                            <label for="czytelnik_input">Czytelnik</label>
-                            <input list="czytelnik" name="czytelnik" id="czytelnik_input" class="form-control <?=isset($_SESSION['l_email_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
-                            <datalist id="czytelnik" >
-                                <?php
-                                //require_once "get_users.php";
-                                ?>
-                            </datalist>
-                            <?//php checkSessionVar('l_email_err');?>
-                        </div> -->
-                        
-                        <div class="form-group col-12 text-left">
-                            <label for="egzemplarz_input">Nr egzemplarza</label>
-                            <!-- <input type="text" id="egzemplarz" name="egzemplarz" class="form-control" autocomplete="off">
-                            <div class="search-list" id='b-list'>
+        <div class="container mt-2 bg-light text-body">
 
-                            </div> -->
-                            <input list="egzemplarz" name="egzemplarz" id="egzemplarz_input" class="form-control <?=isset($_SESSION['r_egz_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
-                            <datalist id="egzemplarz" >
-                                <?php
-                                require_once "get_books_lended.php";
-                                ?>
-                            </datalist>
-                            <?php checkSessionVar('r_egz_err');?>
-                        </div>
-                        
-                        <div class="form-group col-12 text-left">
-                            <label for="od">Data zwrotu</label>
-                            <input type="date" id="data_zwrotu" name="data_zwrotu" class="form-control" value="<?= $today ?>">
-                        </div>
+            <main>
 
-                        <input type="submit" value="Zatwierdź" class="btn btn-primary mx-auto mb-5">
-
+            <nav class="navbar navbar-expand-lg navbar-light bg-light user_subnav">
+                
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a href="user_lends.php" class="nav-link">Aktywne</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a href="user_lends_history.php" class="nav-link  active">Historia</a>
+                    </li>
+                </ul>
+                
+            </nav>
+<!-- 
+                <div class="book_tab_min row border p-2">
+                    
+                    <div class="book_info col-4 text-left my-auto">
+                        <h2 class="h3 text-left mt-1">Lewa Ręka Boga</h2>
                     </div>
-                </form>
-            </article>
+
+                    <div class="book_info col-4 text-left my-auto">
+                        <h3 class="h4 text-left">Wypożyczone przez: Anna Kowalska</h3>
+                    </div>
+
+                    <div class="book_info col-4 text-left my-auto">
+                        <h3 class="h4 text-left">Data wypożyczenia: 2019-03-12</h3>
+                        <h3 class="h4 text-left">Data zwrotu: 2019-04-12</h3>
+                    </div>
+                    
+                </div> -->
+                <?php
+                    require_once "database.php";
+
+                    $email = $_SESSION['email'];
+
+                    $query = $db->query("SELECT wypozyczenie.id_wyp, pracownik.imie, pracownik.nazwisko, wypozyczenie.od, wypozyczenie.data_zwrotu, szczegoly.nazwa FROM wypozyczenie, pracownik, szczegoly, egzemplarz WHERE wypozyczenie.czytelnik='$email' AND wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND data_zwrotu IS NOT NULL");
+                    $result = $query->fetchAll();
+
+                    foreach ($result as $row => $value) {
+                    echo '    
+                        <div class="book_tab_min row border p-2">
+
+                            <div class="book_info col-2 text-left my-auto">
+                                <span class="text-left mt-1">ID: '.$value["id_wyp"].'</span>
+                            </div>
+
+                            <div class="book_info col-2 text-left my-auto">
+                                <h2 class="h3 text-left mt-1">'.$value["nazwa"].'</h2>
+                            </div>
+
+                            <div class="book_info col-4 text-left my-auto">
+                                <span class="text-left">Wypożyczone przez: '.$value['imie'].' '.$value['nazwisko'].'</span>
+                            </div>
+
+                            <div class="book_info col-4 text-left my-auto">
+                                <span class="d-block text-left">Data wypożyczenia: '.$value['od'].'</span>
+                                <span class="d-block text-left">Data zwrotu: '.$value['data_zwrotu'].'</span>
+                            </div>
+                        
+                        </div>
+                        ';
+                    }
+                ?>
+            </main>
         </div>
  
     </section>

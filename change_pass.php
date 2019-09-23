@@ -14,7 +14,7 @@ try {
     $new1 = filter_input(INPUT_POST, 'new1');
     $new2 = filter_input(INPUT_POST, 'new2');
 
-    $check_query = $db->query("SELECT * FROM czytelnik WHERE email='{$_SESSION['email']}'");
+    $check_query = $db->query("SELECT * FROM uzytkownik WHERE email='{$_SESSION['email']}'");
     $c_result = $check_query->fetch();
     
     if(password_verify($old, $c_result['haslo'])){
@@ -22,7 +22,7 @@ try {
 
             $n_pass = password_hash($new1, PASSWORD_DEFAULT);
 
-            $query = $db->prepare("UPDATE czytelnik SET haslo=:haslo WHERE email='{$_SESSION['email']}'");
+            $query = $db->prepare("UPDATE uzytkownik SET haslo=:haslo WHERE email='{$_SESSION['email']}'");
             $query->bindValue(':haslo', $n_pass, PDO::PARAM_STR);
             $query->execute();
 

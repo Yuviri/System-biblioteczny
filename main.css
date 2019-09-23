@@ -298,6 +298,15 @@ h1
     width: 200px;
 }
 
+.search-author{
+    font-size: 12px;
+
+}
+
+input::-webkit-calendar-picker-indicator {
+    display: none;
+  }
+  
 
 
 

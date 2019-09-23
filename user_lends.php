@@ -10,7 +10,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Library</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="bootstrap.min.css" rel="stylesheet">
+        <link href="bootstrap/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="main.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;subset=latin-ext" rel="stylesheet">
     </head>
@@ -125,24 +125,28 @@
 
                     $email = $_SESSION['email'];
 
-                    $query = $db->query("SELECT wypozyczenie.id_wyp, pracownik.imie, pracownik.nazwisko, wypozyczenie.od, wypozyczenie.do, szczegoly.nazwa FROM wypozyczenie, pracownik, szczegoly, egzemplarz WHERE wypozyczenie.czytelnik='$email' AND wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN");
+                    $query = $db->query("SELECT wypozyczenie.id_wyp, pracownik.imie, pracownik.nazwisko, wypozyczenie.od, wypozyczenie.do, wypozyczenie.data_zwrotu, szczegoly.nazwa FROM wypozyczenie, pracownik, szczegoly, egzemplarz WHERE wypozyczenie.czytelnik='$email' AND wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.data_zwrotu IS NULL");
                     $result = $query->fetchAll();
 
                     foreach ($result as $row => $value) {
-                    echo '    
-                        <div class="book_tab_min row border p-2">
-                        
-                            <div class="book_info col-4 text-left my-auto">
+                        echo '    
+                            <div class="book_tab_min row border p-2">
+
+                            <div class="book_info col-2 text-left my-auto">
+                                <span class="text-left mt-1">ID: '.$value["id_wyp"].'</span>
+                            </div>
+
+                            <div class="book_info col-2 text-left my-auto">
                                 <h2 class="h3 text-left mt-1">'.$value["nazwa"].'</h2>
                             </div>
 
                             <div class="book_info col-4 text-left my-auto">
-                                <h3 class="h4 text-left">Wypożyczone przez: '.$value['imie'].' '.$value['nazwisko'].'</h3>
+                                <span class="text-left">Wypożyczone przez: '.$value['imie'].' '.$value['nazwisko'].'</span>
                             </div>
 
                             <div class="book_info col-4 text-left my-auto">
-                                <h3 class="h4 text-left">Data wypożyczenia: '.$value['od'].'</h3>
-                                <h3 class="h4 text-left">Data zwrotu: '.$value['do'].'</h3>
+                                <span class="d-block text-left">Data wypożyczenia: '.$value['od'].'</span>
+                                <span class="d-block text-left">Przewidywana data zwrotu: '.$value['do'].'</span>
                             </div>
                         
                         </div>
@@ -156,10 +160,10 @@
 
 </main>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
 	</script>
-	<script src="bootstrap.min.js"></script>
+	<script src="bootstrap/bootstrap.min.js"></script>
 
 
 </body>
