@@ -112,6 +112,11 @@
 
                 <?php
                     require_once "database.php";
+
+                        if(isset($_SESSION['reserve-feedback'])){
+                            echo $_SESSION['reserve-feedback'];
+                            unset($_SESSION['reserve-feedback']);
+                        }
                     
                         $query = $db->query("SELECT egzemplarz.id_egzemplarza, szczegoly.nazwa, szczegoly.autor, szczegoly.opis, szczegoly.cover, COUNT(*) as total  FROM egzemplarz, szczegoly WHERE czy_wyp!='1' AND szczegoly.ISBN=egzemplarz.ISBN GROUP BY egzemplarz.ISBN ORDER BY szczegoly.nazwa ASC");
                         $result = $query->fetchAll();
@@ -128,8 +133,7 @@
                                         <p class="description text-justify mt-4">'.substr($value["opis"],0,360)."...".'</p>
                                     </div>
                                     <div class="book_tab_controls col-2 text-center d-flexbox align-self-center">
-                                        <a href="#" class="btn btn-primary mt-5">Zarezerwuj</a>
-                                        <a href="#" class="btn btn-primary mt-2">Wypożycz</a>
+                                        <a href="reserve.php?id='.$value['id_egzemplarza'].'" class="btn btn-primary mt-5">Zarezerwuj</a>
                                         <p class="books_counter mt-3">W bibliotece: <span class="font-weight-bold">'.$value["total"].'</span></p>
                                     </div>
                                 </div>

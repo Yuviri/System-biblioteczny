@@ -27,8 +27,7 @@
                                  <p class="description text-justify mt-4">'.substr($value["opis"],0,360)."...".'</p>
                              </div>
                              <div class="book_tab_controls col-2 text-center d-flexbox align-self-center">
-                                 <a href="#" class="btn btn-primary mt-5">Zarezerwuj</a>
-                                 <a href="#" class="btn btn-primary mt-2">Wypożycz</a>
+                                 <a href="reserve.php?id='.$value['id_egzemplarza'].'" class="btn btn-primary mt-5">Zarezerwuj</a>
                                  <p class="books_counter mt-3">W bibliotece: <span class="font-weight-bold">'.$value["total"].'</span></p>
                              </div>
                          </div>
