@@ -19,9 +19,11 @@ if(isset($_GET['id']) && isset($_SESSION['email']) && $_SESSION['uprawnienia']='
 
         $conn->query('SET GLOBAL event_scheduler = ON');
         $conn->query("UPDATE egzemplarz SET czy_wyp=1 WHERE id_egzemplarza='$id_n'");
-        $conn->query("INSERT INTO rezerwacja VALUES(NULL, '$email', '$id', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL 1 DAY)");
-        $conn->query("CREATE EVENT reservation_".$id." ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 2 MINUTE DO UPDATE egzemplarz SET czy_wyp=0 WHERE id_egzemplarza='$id'");
+        $conn->query("INSERT INTO rezerwacja VALUES(NULL, '$email', '$id', 'aktywna', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL 1 DAY)");
+        $conn->query("CREATE EVENT reservation_".$id." ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 1 DAY DO UPDATE egzemplarz, rezerwacja SET egzemplarz.czy_wyp=0, rezerwacja.status = 'zakonczona' WHERE id_egzemplarza='$id' AND rezerwacja.egzemplarz = egzemplarz.id_egzemplarza");
         
+
+
         $_SESSION['reserve-feedback'] = '<div class="alert alert-success mt-2">Rezerwacja przebiegła pomyślnie</div>';
         header("Location: katalog.php");
 
@@ -30,6 +32,10 @@ if(isset($_GET['id']) && isset($_SESSION['email']) && $_SESSION['uprawnienia']='
             header("Location: katalog.php");
     }
 
+    $conn->close();
+
 } else {
     header('Location: katalog.php');
 }
+
+        

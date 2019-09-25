@@ -1,5 +1,10 @@
 <?php
     session_start();
+
+    if(!isset($_SESSION['zalogowany'])){
+        header('Location: index.php');
+        exit();
+    }
 ?>
 
 <!DOCTYPE html>
@@ -88,8 +93,6 @@
 
         <div class="container mt-2 bg-light text-body">
 
-            <main>
-
             <nav class="navbar navbar-expand-lg navbar-light bg-light user_subnav">
                 
                 <ul class="navbar-nav mx-auto">
@@ -103,30 +106,59 @@
                 </ul>
                 
             </nav>
-<!-- 
-                <div class="book_tab_min row border p-2">
-                    
-                    <div class="book_info col-4 text-left my-auto">
-                        <h2 class="h3 text-left mt-1">Lewa Ręka Boga</h2>
-                    </div>
 
-                    <div class="book_info col-4 text-left my-auto">
-                        <h3 class="h4 text-left">Wypożyczone przez: Anna Kowalska</h3>
-                    </div>
+            <main>
 
-                    <div class="book_info col-4 text-left my-auto">
-                        <h3 class="h4 text-left">Data wypożyczenia: 2019-03-12</h3>
-                        <h3 class="h4 text-left">Data zwrotu: 2019-04-12</h3>
-                    </div>
-                    
-                </div> -->
+
                 <?php
+
+                    if(isset($_SESSION['cancel-feedback'])){
+                        echo $_SESSION['cancel-feedback'];
+                        unset($_SESSION['cancel-feedback']);
+                    }
+
                     require_once "database.php";
 
                     $email = $_SESSION['email'];
 
                     $query = $db->query("SELECT wypozyczenie.id_wyp, pracownik.imie, pracownik.nazwisko, wypozyczenie.od, wypozyczenie.do, wypozyczenie.data_zwrotu, szczegoly.nazwa FROM wypozyczenie, pracownik, szczegoly, egzemplarz WHERE wypozyczenie.czytelnik='$email' AND wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.data_zwrotu IS NULL");
                     $result = $query->fetchAll();
+
+                    $queryR = $db->query("SELECT rezerwacja.id_rez, rezerwacja.od, rezerwacja.do, szczegoly.nazwa, rezerwacja.egzemplarz FROM rezerwacja, szczegoly, egzemplarz WHERE rezerwacja.czytelnik='$email' AND rezerwacja.egzemplarz=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND rezerwacja.status='aktywna'");
+                    $resultR = $queryR->fetchAll();
+
+                    // $od = new DataTime($resultR=>0['od'])
+
+                    foreach ($resultR as $row => $value) {
+
+                        $od = new DateTime();
+                        $do = new DateTime($value['do']);
+                        $remains = $do->diff($od);
+                        $remains = $remains->format('%h:%I:%S');
+
+                        echo '    
+                            <div class="book_tab_min reserve_tab row border p-2">
+
+                            <div class="book_info col-2 text-left my-auto">
+                                <span class="text-left mt-1">ID: '.$value["id_rez"].'</span>
+                            </div>
+
+                            <div class="book_info col-2 text-left my-auto">
+                                <h2 class="h3 text-left mt-1">'.$value["nazwa"].'</h2>
+                            </div>
+
+                            <div class="book_info col-3 text-center my-auto">
+                                <span class="text-left" style="color: red;">Rezerwacja</span>
+                            </div>
+
+                            <div class="book_info col-5 text-right my-auto"> 
+                                <span class="d-inline-block">Pozostało '. $remains.'</span>
+                            <a href="cancel_reservation.php?idr='.$value['id_rez'].'&ide='.$value['egzemplarz'].'" class="btn btn-danger mx-3 d-inline-block">Anuluj rezerwację</a>
+                            </div>
+                        
+                        </div>
+                        ';
+                    }
 
                     foreach ($result as $row => $value) {
                         echo '    
