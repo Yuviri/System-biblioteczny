@@ -18,7 +18,7 @@ h1
 	margin: 20px;
 }
 
-.main_page
+.main_page h1
 {
 	text-align: center;
 }
@@ -318,9 +318,83 @@ input::-webkit-calendar-picker-indicator {
 }
 
 
+/* Book item page */
+
+.b_info{
+    position: relative;
+}
+
+.title{
+    font-size: 28px;
+}
+
+.author{
+    font-size: 18px;
+}
+
+.publisher{
+    margin-top: 40px;
+    margin-bottom: 6px;
+    font-size: 16px;
+}
+
+.genre{
+    margin-bottom: 6px;
+    font-size: 16px;
+}
+
+.oryginal_title{
+    margin-bottom: 6px;
+    font-size: 16px;
+}
+
+.description_page{
+    font-size: 15px;
+}
+
+.item_controls a{
+    width: 100%;
+}
+
+.comment img{
+    width: 40%;
+}
+
+.comment-own img{
+    width: 40%;
+}
+
+.comment{
+    min-height: 150px;
+}
+
+.comment-own{
+    min-height: 150px;
+    background: lightcyan;
+}
+
+.add_date{
+    font-size: 14px;
+}
+
+.comment-info{
+    font-size: 22px;
+}
+
+.write-comment{
+    font-size: 22px;
+}
+
+
+
 
 @media only screen and (max-width: 576px) {
     .register_control{
         width: 400px;
     }
+
+    .b_info{
+        margin-top: 20px;
+    }
+
   }

@@ -37,12 +37,21 @@
                     if(isset($_SESSION["zalogowany"]) && $_SESSION['uprawnienia']=='pracownik'){
                         echo "
                         <li class='nav-item dropdown'>
-                            <a href='#' class='nav-link dropdown-toggl' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false' id='submenu'>Wypożyczenia i zwroty</a>
+                            <a href='#' class='nav-link dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false' id='submenu'>Wypożyczenia i zwroty</a>
                            
                             <div class='dropdown-menu' aria-labelledby='submenu'>
                                 <a href='lend_form.php' class='dropdown-item'>Wypożyczenia</a>
                                 <div class='dropdown-divider'></div>
                                 <a href='return_form.php' class='dropdown-item'>Zwroty</a>
+                            </div>
+                        </li>
+                        <li class='nav-item dropdown'>
+                            <a href='#' class='nav-link dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false' id='submenu'>Dodaj książki</a>
+                           
+                            <div class='dropdown-menu' aria-labelledby='submenu'>
+                                <a href='add_books_form.php' class='dropdown-item'>Nowa pozycja</a>
+                                <div class='dropdown-divider'></div>
+                                <a href='return_form.php' class='dropdown-item'>Istniejąca pozycja</a>
                             </div>
                         </li>";
                     }
@@ -118,9 +127,9 @@
                             unset($_SESSION['reserve-feedback']);
                         }
                     
-                        $query = $db->query("SELECT egzemplarz.id_egzemplarza, szczegoly.nazwa, szczegoly.autor, szczegoly.opis, szczegoly.cover, COUNT(*) as total  FROM egzemplarz, szczegoly WHERE czy_wyp!='1' AND szczegoly.ISBN=egzemplarz.ISBN GROUP BY egzemplarz.ISBN ORDER BY szczegoly.nazwa ASC");
+                        $query = $db->query("SELECT egzemplarz.id_egzemplarza, szczegoly.isbn, szczegoly.nazwa, szczegoly.autor, szczegoly.opis, szczegoly.cover, COUNT(*) as total  FROM egzemplarz, szczegoly WHERE czy_wyp!='1' AND szczegoly.ISBN=egzemplarz.ISBN GROUP BY egzemplarz.ISBN ORDER BY szczegoly.nazwa ASC");
                         $result = $query->fetchAll();
-                        
+                      
                         foreach ($result as $row => $value) {
                             echo '    
                                 <div class="book_tab row border">
@@ -134,6 +143,7 @@
                                     </div>
                                     <div class="book_tab_controls col-2 text-center d-flexbox align-self-center">
                                         <a href="reserve.php?id='.$value['id_egzemplarza'].'" class="btn btn-primary mt-5">Zarezerwuj</a>
+                                        <a href="book_item.php?isbn='.$value['isbn'].'" class="btn btn-primary mt-1">Zobacz więcej</a>
                                         <p class="books_counter mt-3">W bibliotece: <span class="font-weight-bold">'.$value["total"].'</span></p>
                                     </div>
                                 </div>

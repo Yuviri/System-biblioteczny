@@ -1,7 +1,15 @@
 <?php
     session_start();
-    require_once 'includes/get_date.inc.php';
-      
+    if($_SESSION['uprawnienia']!='pracownik'){
+        header('Location: index.php');
+    }
+
+    function checkSessionVar($var){
+        if(isset($_SESSION[$var])){
+          echo $_SESSION[$var];
+          unset($_SESSION[$var]);
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -97,59 +105,70 @@
 
         <div class="container mt-4 bg-light text-body">
             <header>
-                <h1 class="py-3">Wypożyczenia</h1>
+                <h1 class="py-3">Nowa pozycja</h1>
             </header>
             <article class="lend_form mx-auto">
-                <?=isset($_SESSION['public-err']) ? $_SESSION['public-err'] : ""?>
-                <?=isset($_SESSION['dev-err']) ? $_SESSION['dev-err'] : ""?>
-                <?=isset($_SESSION['success']) ? $_SESSION['success'] : ""?>
-                <?=isset($_SESSION['existing-err']) ? $_SESSION['existing-err'] : ""?>
+                <?=isset($_SESSION['a-error']) ? $_SESSION['a-error'] : ""?>
+                <?=isset($_SESSION['a-success']) ? $_SESSION['a-success'] : ""?>
                 <?php 
-                if (isset($_SESSION['public-err'])) unset($_SESSION['public-err']);
-                if (isset($_SESSION['dev-err'])) unset($_SESSION['dev-err']);
-                if (isset($_SESSION['success'])) unset($_SESSION['success']);
-                if (isset($_SESSION['existing-err'])) unset($_SESSION['existing-err']);
+                if (isset($_SESSION['a-success'])) unset($_SESSION['a-success']);
+                if (isset($_SESSION['a-error'])) unset($_SESSION['a-error']);
                 ?>
-                <form action="lend.php" method="post">
+                <form action="includes/add_books.inc.php" method="post">
                     <div class="row">
                         <div class="form-group col-12 text-left">
-                            <label for="czytelnik_input">Czytelnik</label>
-                            <!-- <input type="text" id="czytelnik" name="czytelnik" class="form-control" autocomplete="off">
-                            <div class="search-list" id='c-list'>
- 
-                            </div> -->
-                            <input list="czytelnik" name="czytelnik" id="czytelnik_input" class="form-control <?=isset($_SESSION['l_email_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
-                            <datalist id="czytelnik" >
-                                <?php
-                                require_once "get_users.php";
-                                ?>
-                            </datalist>
-                            <?php checkSessionVar('l_email_err');?>
+                            <label for="isbn">ISBN</label>
+                            <input name="isbn" id="isbn" class="form-control <?=isset($_SESSION['a_isbn_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
+                            <?php checkSessionVar('a_isbn_err');?>
                         </div>
-                        
-                        <div class="form-group col-12 text-left">
-                            <label for="egzemplarz_input">Nr egzemplarza</label>
-                            <!-- <input type="text" id="egzemplarz" name="egzemplarz" class="form-control" autocomplete="off">
-                            <div class="search-list" id='b-list'>
 
+                        <div class="form-group col-12 text-left">
+                            <label for="title">Tytuł</label>
+                            <input name="title" id="title" class="form-control <?=isset($_SESSION['a_title_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php checkSessionVar('fill_title');?>" />
+                            <?php checkSessionVar('a_title_err');?>
+                        </div>
+                        
+                        <div class="form-group col-12 text-left">
+                            <label for="author">Autor</label>
+                            <input name="author" id="author" class="form-control <?=isset($_SESSION['a_author_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php checkSessionVar('fill_author');?>" />
+                            <?php checkSessionVar('a_author_err');?>
+                        </div>
+                        
+                        <div class="form-group col-12 text-left">
+                            <label for="o_title">Tytuł oryginału</label>
+                            <input name="o_title" id="o_title" class="form-control <?=isset($_SESSION['a_o_title_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php checkSessionVar('fill_o_title');?>" />
+                            <?php checkSessionVar('a_o_title_err');?>
+                        </div>
+                        
+                        <div class="form-group col-12 text-left">
+                            <label for="genre">Gatunek</label>
+                            <input name="genre" id="genre" class="form-control <?=isset($_SESSION['l_genre_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php checkSessionVar('fill_genre');?>" />
+                            <?php checkSessionVar('l_genre_err');?>
+                        </div>
+
+                        <div class="form-group col-12 text-left">
+                            <label for="publisher">Wydawnictwo</label>
+                            <!-- <input name="publisher" id="publisher" class="form-control <?=isset($_SESSION['l_publisher_err']) ? 'is-invalid' : ''?>" autocomplete="off" /> -->
+                            <select name="publisher" id="publisher" class="form-control">
+                                <?php require_once 'get_publishers.php' ?>
+                            </select>
+                            <?php checkSessionVar('l_publisher_err');?>
+                        </div>
+
+                        <div class="form-group col-12 text-left">
+                            <label for="cover">Okładka</label>
+                            <input name="cover" id="cover" class="form-control <?=isset($_SESSION['l_cover_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
+                            <!-- <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="cover" lang="pl-Pl">
+                                <label class="custom-file-label" for="cover" data-browse="Przeglądaj">Wybierz pliki</label>
                             </div> -->
-                            <input list="egzemplarz" name="egzemplarz" id="egzemplarz_input" class="form-control <?=isset($_SESSION['l_egz_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
-                            <datalist id="egzemplarz" >
-                                <?php
-                                require_once "get_books.php";
-                                ?>
-                            </datalist>
-                            <?php checkSessionVar('l_egz_err');?>
+                            <?php checkSessionVar('l_cover_err');?>
                         </div>
-                        
+
                         <div class="form-group col-12 text-left">
-                            <label for="od">Data wypożyczenia</label>
-                            <input type="date" id="od" name="od" class="form-control" value="<?= $today ?>">
-                        </div>
-                        
-                        <div class="form-group col-12 text-left">
-                            <label for="do">Przybliżona data zwrotu</label>
-                            <input type="date" id="do" name="do" class="form-control" value="<?= $estimated ?>">
+                            <label for="description">Opis</label>
+                            <textarea class="form-control <?=isset($_SESSION['l_description_err']) ? 'is-invalid' : ''?>" id="description" name="description" rows="7"><?php checkSessionVar('fill_description');?></textarea>
+                            <?php checkSessionVar('l_description_err');?>
                         </div>
 
                         <input type="submit" value="Zatwierdź" class="btn btn-primary mx-auto mb-5">
