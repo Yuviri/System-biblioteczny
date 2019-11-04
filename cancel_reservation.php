@@ -15,7 +15,7 @@ if(isset($_GET['idr']) && isset($_SESSION['email']) && $_SESSION['uprawnienia']=
         
         $conn = mysqli_connect('localhost', 'root', '', 'library');
 
-        $conn->query("DELETE FROM rezerwacja WHERE id_rez='$idr'");
+        $conn->query("UPDATE rezerwacja SET status='anulowana' WHERE id_rez='$idr'");
         $conn->query("UPDATE egzemplarz SET czy_wyp=0 WHERE id_egzemplarza='$ide'");
         $conn->query("DROP EVENT IF EXISTS reservation_".$ide.";");
         

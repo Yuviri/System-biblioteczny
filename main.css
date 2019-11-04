@@ -307,7 +307,9 @@ input::-webkit-calendar-picker-indicator {
     display: none;
   }
 
-
+  .bootstrap-select .text-muted {
+    margin-left: 20px;
+  }
 
 
 /* Rejestracja */

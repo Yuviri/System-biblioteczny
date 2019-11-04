@@ -75,7 +75,7 @@ if(isset($_POST["email"])){
         
 
         if($clean){
-            $ins = $db->query("INSERT INTO uzytkownik VALUES('$email', '$password_h', '$name', '$surname', '$gender', '$phone')");
+            $ins = $db->query("INSERT INTO uzytkownik VALUES('$email', '$password_h', '$name', '$surname', '$gender', '$phone', 'img/avatars/defaultM.png')");
             
             if($ins){
                 $_SESSION["err-success"] = "Rejestracja przebiegła pomyślnie. Możesz zalogować się na swoje konto";
@@ -140,6 +140,8 @@ if(isset($_POST["email"])){
                                 <a href='lend_form.php' class='dropdown-item'>Wypożyczenia</a>
                                 <div class='dropdown-divider'></div>
                                 <a href='return_form.php' class='dropdown-item'>Zwroty</a>
+                                <div class='dropdown-divider'></div>
+                                <a href='reserve_lend_form.php' class='dropdown-item'>Obsługa rezerwacji</a>
                             </div>
                         </li>
                         <li class='nav-item dropdown'>
@@ -154,10 +156,13 @@ if(isset($_POST["email"])){
                     }
                 ?>
 
-                <li class="nav-item">
-                    <a href="register.php" class="nav-link">Rejestracja</a>
-                </li>
-
+                <?php
+                    if (!isset($_SESSION['zalogowany'])) {
+                        echo '<li class="nav-item">
+                                <a href="register.php" class="nav-link">Rejestracja</a>
+                            </li>';
+                    }  
+                ?>
 
                 <?php
 
@@ -219,7 +224,7 @@ if(isset($_POST["email"])){
 
                     <div class="form-group col-12 mt-4">
                         <label for="email">E-mail:</label>
-                        <input type="email" name="email" id="email" value="<?=isset($_SESSION['fill-email']) ? $_SESSION['fill-email'] : ''?>" class="form-control <?php 
+                        <input type="text" name="email" id="email" value="<?=isset($_SESSION['fill-email']) ? $_SESSION['fill-email'] : ''?>" class="form-control <?php 
                             if(isset($_SESSION["err-email"])) echo "is-invalid";
                         ?>">
                         <div class="invalid-feedback"><?php 

@@ -43,6 +43,8 @@
                                 <a href='lend_form.php' class='dropdown-item'>Wypożyczenia</a>
                                 <div class='dropdown-divider'></div>
                                 <a href='return_form.php' class='dropdown-item'>Zwroty</a>
+                                <div class='dropdown-divider'></div>
+                                <a href='reserve_lend_form.php' class='dropdown-item'>Obsługa rezerwacji</a>
                             </div>
                         </li>
                         <li class='nav-item dropdown'>
@@ -57,9 +59,13 @@
                     }
                 ?>
 
-                <li class="nav-item">
-                    <a href="register.php" class="nav-link">Rejestracja</a>
-                </li>
+                <?php
+                    if (!isset($_SESSION['zalogowany'])) {
+                        echo '<li class="nav-item">
+                                <a href="register.php" class="nav-link">Rejestracja</a>
+                            </li>';
+                    }  
+                ?>
 
 
                 <?php
@@ -110,6 +116,9 @@
                         $_SESSION["err-dev"].
                         "</div>";
                         unset($_SESSION["err-dev"]);
+                    }
+                    if(isset($_GET["redirect"])){
+                        echo "<div class='alert alert-info col-11 mx-auto mt-2' role='alert'>Rezerwacji może dokonać tylko zalogowany użytkownik. Zaloguj się korzystając z formularza poniżej lub załóż konto.</div>";
                     }
                     ?>
 

@@ -25,4 +25,18 @@ class Dbc{
             exit("Database connection error");
         }
     }
+    protected function connect_mysqli(){
+        $this->server = "localhost";
+        $this->username = 'root';
+        $this->password = '';
+        $this->db_name = 'library';
+
+        try {
+            $conn = mysqli_connect($this->server, $this->username, $this->password, $this->db_name);
+            mysqli_report(MYSQLI_REPORT_STRICT);
+            return $conn;
+        } catch (Exception $e) {
+            exit("Database connection error");
+        }
+    }
 }

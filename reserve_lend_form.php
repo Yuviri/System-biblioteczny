@@ -1,7 +1,12 @@
 <?php
     session_start();
     require_once 'includes/get_date.inc.php';
-      
+    
+    if(!isset($_SESSION["zalogowany"]) || $_SESSION['uprawnienia']!='pracownik'){
+        header("Location: index.php");
+    }
+    
+
 ?>
 
 <!DOCTYPE html>
@@ -15,6 +20,7 @@
         <link href="bootstrap/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="main.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;subset=latin-ext" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
     </head>
 <body>
 
@@ -103,27 +109,19 @@
 
         <div class="container mt-4 bg-light text-body">
             <header>
-                <h1 class="py-3">Wypożyczenia</h1>
+                <h1 class="py-3">Wypożyczenie zarezerwowanych egzemplarzy</h1>
             </header>
             <article class="lend_form mx-auto">
-                <?=isset($_SESSION['public-err']) ? $_SESSION['public-err'] : ""?>
-                <?=isset($_SESSION['dev-err']) ? $_SESSION['dev-err'] : ""?>
-                <?=isset($_SESSION['success']) ? $_SESSION['success'] : ""?>
-                <?=isset($_SESSION['existing-err']) ? $_SESSION['existing-err'] : ""?>
+                <?=isset($_SESSION['lendr-success']) ? $_SESSION['lendr-success'] : ""?>
+                <?=isset($_SESSION['lendr-err']) ? $_SESSION['lendr-err'] : ""?>
                 <?php 
                 if (isset($_SESSION['public-err'])) unset($_SESSION['public-err']);
-                if (isset($_SESSION['dev-err'])) unset($_SESSION['dev-err']);
-                if (isset($_SESSION['success'])) unset($_SESSION['success']);
-                if (isset($_SESSION['existing-err'])) unset($_SESSION['existing-err']);
+                if (isset($_SESSION['lendr-err'])) unset($_SESSION['lendr-err']);
                 ?>
-                <form action="lend.php" method="post">
+                <form action="scripts/reserve_lend.php" method="post">
                     <div class="row">
-                        <div class="form-group col-12 text-left">
+                        <!-- <div class="form-group col-12 text-left">
                             <label for="czytelnik_input">Czytelnik</label>
-                            <!-- <input type="text" id="czytelnik" name="czytelnik" class="form-control" autocomplete="off">
-                            <div class="search-list" id='c-list'>
- 
-                            </div> -->
                             <input list="czytelnik" name="czytelnik" id="czytelnik_input" class="form-control <?=isset($_SESSION['l_email_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
                             <datalist id="czytelnik" >
                                 <?php
@@ -131,21 +129,16 @@
                                 ?>
                             </datalist>
                             <?php checkSessionVar('l_email_err');?>
-                        </div>
+                        </div> -->
                         
                         <div class="form-group col-12 text-left">
-                            <label for="egzemplarz_input">Nr egzemplarza</label>
-                            <!-- <input type="text" id="egzemplarz" name="egzemplarz" class="form-control" autocomplete="off">
-                            <div class="search-list" id='b-list'>
-
-                            </div> -->
-                            <input list="egzemplarz" name="egzemplarz" id="egzemplarz_input" class="form-control <?=isset($_SESSION['l_egz_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
-                            <datalist id="egzemplarz" >
+                            <label for="rezerwacje_input">Rezerwacja</label>
+                            <select class="selectpicker form-control border" data-show-subtext="true" name="reservation" id="rezerwacje_input" data-style="btn-white">
                                 <?php
-                                require_once "get_books.php";
+                                require_once "get_reservations.php";
                                 ?>
-                            </datalist>
-                            <?php checkSessionVar('l_egz_err');?>
+                            </select>
+                            <?php checkSessionVar('l_res_err');?>
                         </div>
                         
                         <div class="form-group col-12 text-left">
@@ -174,7 +167,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
 	</script>
 	<script src="bootstrap/bootstrap.min.js"></script>
-    <!-- <script src="scripts/katalog.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
 
 
 </body>
