@@ -1,11 +1,12 @@
 <?php
     session_start();
-    require_once 'includes/get_date.inc.php';
+    require_once 'includes/autoloader.inc.php';
     
     if(!isset($_SESSION["zalogowany"]) || $_SESSION['uprawnienia']!='pracownik'){
         header("Location: index.php");
     }
     
+    $utility = new Utilities();
 
 ?>
 
@@ -25,85 +26,10 @@
 <body>
 
 
-<header>
+<?php 
+    require_once "includes/navi.inc.php" 
+?>
 
-    <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-        <a href="index.php" class="navbar-brand d-inline-block">System Biblioteczny</a>
-        
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Przełącznik nawigacji">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="mainmenu">
-
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a href="katalog.php" class="nav-link">Katalog książek</a>
-                </li>
-
-                 <?php
-                    if(isset($_SESSION["zalogowany"]) && $_SESSION['uprawnienia']=='pracownik'){
-                        echo "
-                        <li class='nav-item dropdown'>
-                            <a href='#' class='nav-link dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false' id='submenu'>Wypożyczenia i zwroty</a>
-                           
-                            <div class='dropdown-menu' aria-labelledby='submenu'>
-                                <a href='lend_form.php' class='dropdown-item'>Wypożyczenia</a>
-                                <div class='dropdown-divider'></div>
-                                <a href='return_form.php' class='dropdown-item'>Zwroty</a>
-                                <div class='dropdown-divider'></div>
-                                <a href='reserve_lend_form.php' class='dropdown-item'>Obsługa rezerwacji</a>
-                            </div>
-                        </li>
-                        <li class='nav-item dropdown'>
-                            <a href='#' class='nav-link dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false' id='submenu'>Dodaj książki</a>
-                           
-                            <div class='dropdown-menu' aria-labelledby='submenu'>
-                                <a href='add_books_form.php' class='dropdown-item'>Nowa pozycja</a>
-                                <div class='dropdown-divider'></div>
-                                <a href='return_form.php' class='dropdown-item'>Istniejąca pozycja</a>
-                            </div>
-                        </li>";
-                    }
-                ?>
-
-                <?php
-                    if (!isset($_SESSION['zalogowany'])) {
-                        echo '<li class="nav-item">
-                                <a href="register.php" class="nav-link">Rejestracja</a>
-                            </li>';
-                    }  
-                ?>
-
-
-                <?php
-                    if(isset($_SESSION["zalogowany"])){
-                        echo "
-                        <li class='nav-item dropdown'>
-                            <a href='#' class='nav-link dropdown-toggl' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false' id='submenu'>".
-                            $_SESSION['imie']." ".$_SESSION['nazwisko']."</a>
-                           
-                            <div class='dropdown-menu' aria-labelledby='submenu'>
-                                <a href='user_lends.php' class='dropdown-item'>Moje wypożyczenia</a>
-                                <a href='settings.php' class='dropdown-item'>Ustawiena konta</a>
-                                <div class='dropdown-divider'></div>
-                                <a href='logout.php' class='dropdown-item'>Wyloguj się </a>
-                            </div>
-                        </li>";
-                    }else {
-                        echo "
-                            <li class='nav-item'>
-                                <a href='login_form.php' class='nav-link'>Logowanie</a>
-                            </li>
-                        ";
-                    }
-                ?>
-            </ul>
-
-        </div>
-    </nav>
-
-</header>
 <main>
     <section class="main_page">
 
@@ -119,36 +45,25 @@
                 if (isset($_SESSION['lendr-err'])) unset($_SESSION['lendr-err']);
                 ?>
                 <form action="scripts/reserve_lend.php" method="post">
-                    <div class="row">
-                        <!-- <div class="form-group col-12 text-left">
-                            <label for="czytelnik_input">Czytelnik</label>
-                            <input list="czytelnik" name="czytelnik" id="czytelnik_input" class="form-control <?=isset($_SESSION['l_email_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
-                            <datalist id="czytelnik" >
-                                <?php
-                                require_once "get_users.php";
-                                ?>
-                            </datalist>
-                            <?php checkSessionVar('l_email_err');?>
-                        </div> -->
-                        
+                    <div class="row">                     
                         <div class="form-group col-12 text-left">
                             <label for="rezerwacje_input">Rezerwacja</label>
                             <select class="selectpicker form-control border" data-show-subtext="true" name="reservation" id="rezerwacje_input" data-style="btn-white">
                                 <?php
-                                require_once "get_reservations.php";
+                                    echo $utility->get_reservations();
                                 ?>
                             </select>
-                            <?php checkSessionVar('l_res_err');?>
+                            <?php $utility->checkSessionVar('l_res_err');?>
                         </div>
                         
                         <div class="form-group col-12 text-left">
                             <label for="od">Data wypożyczenia</label>
-                            <input type="date" id="od" name="od" class="form-control" value="<?= $today ?>">
+                            <input type="date" id="od" name="od" class="form-control" value="<?= $utility->get_today() ?>">
                         </div>
                         
                         <div class="form-group col-12 text-left">
                             <label for="do">Przybliżona data zwrotu</label>
-                            <input type="date" id="do" name="do" class="form-control" value="<?= $estimated ?>">
+                            <input type="date" id="do" name="do" class="form-control" value="<?= $utility->get_estimated() ?>">
                         </div>
 
                         <input type="submit" value="Zatwierdź" class="btn btn-primary mx-auto mb-5">

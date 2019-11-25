@@ -8,7 +8,7 @@ if (!isset($_POST['title'])) {
     session_start();
 
     require_once 'autoloader.inc.php';
-    require_once 'functions.php';
+    require_once 'functions.inc.php';
 
     //Dodaj sprawdzanie długości
 
@@ -32,7 +32,7 @@ if (!isset($_POST['title'])) {
 
     $publisher = $_POST['publisher'];
  
-    $cover = $_POST['cover'];
+    $cover = $_FILES['cover'];
 
     //To ma związek ściśle z uploudem plików
 
@@ -67,9 +67,26 @@ if (!isset($_POST['title'])) {
         exit();
     }
 
+    $book = new AddBook($isbn, $title, $author, $o_title, $genre, $description, $publisher);
+
+    // Warunek czy obrazek się zuploadował
+
+    if(!$book->upload_cover($cover, $title, $author)){
+        $_SESSION['a_cover_err'] = '<div class="invalid-feedback">'.$book->get_upload_err().'</div>';
+        
+        
+        $_SESSION['fill_isbn'] = $isbn;
+        $_SESSION['fill_title'] = $title;
+        $_SESSION['fill_author'] = $author;
+        $_SESSION['fill_o_title'] = $title;
+        $_SESSION['fill_genre'] = $title;
+        $_SESSION['fill_publisher'] = $publisher;
+        $_SESSION['fill_description'] = $description;
+    } 
+
     //Dodanie pozycji do bazy danych
 
-    $book = new AddBook($isbn, $title, $author, $o_title, $genre, $description, $publisher, $cover);
+    
 
     if($book->addB()){
         $_SESSION['a-success'] = '<div class="alert alert-success">Dodano nową pozycję</div>';

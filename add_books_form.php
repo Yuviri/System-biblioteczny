@@ -4,12 +4,9 @@
         header('Location: index.php');
     }
 
-    function checkSessionVar($var){
-        if(isset($_SESSION[$var])){
-          echo $_SESSION[$var];
-          unset($_SESSION[$var]);
-        }
-    }
+    require_once "includes/autoloader.inc.php";
+
+    $utility = new Utilities();
 ?>
 
 <!DOCTYPE html>
@@ -26,86 +23,10 @@
     </head>
 <body>
 
+<?php
+    require_once "includes/navi.inc.php";
+?>
 
-<header>
-
-    <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-        <a href="index.php" class="navbar-brand d-inline-block">System Biblioteczny</a>
-        
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Przełącznik nawigacji">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="mainmenu">
-
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a href="katalog.php" class="nav-link">Katalog książek</a>
-                </li>
-
-                 <?php
-                    if(isset($_SESSION["zalogowany"]) && $_SESSION['uprawnienia']=='pracownik'){
-                        echo "
-                        <li class='nav-item dropdown'>
-                            <a href='#' class='nav-link dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false' id='submenu'>Wypożyczenia i zwroty</a>
-                           
-                            <div class='dropdown-menu' aria-labelledby='submenu'>
-                                <a href='lend_form.php' class='dropdown-item'>Wypożyczenia</a>
-                                <div class='dropdown-divider'></div>
-                                <a href='return_form.php' class='dropdown-item'>Zwroty</a>
-                                <div class='dropdown-divider'></div>
-                                <a href='reserve_lend_form.php' class='dropdown-item'>Obsługa rezerwacji</a>
-                            </div>
-                        </li>
-                        <li class='nav-item dropdown'>
-                            <a href='#' class='nav-link dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false' id='submenu'>Dodaj książki</a>
-                           
-                            <div class='dropdown-menu' aria-labelledby='submenu'>
-                                <a href='add_books_form.php' class='dropdown-item'>Nowa pozycja</a>
-                                <div class='dropdown-divider'></div>
-                                <a href='return_form.php' class='dropdown-item'>Istniejąca pozycja</a>
-                            </div>
-                        </li>";
-                    }
-                ?>
-
-                <?php
-                    if (!isset($_SESSION['zalogowany'])) {
-                        echo '<li class="nav-item">
-                                <a href="register.php" class="nav-link">Rejestracja</a>
-                            </li>';
-                    }  
-                ?>
-
-
-                <?php
-                    if(isset($_SESSION["zalogowany"])){
-                        echo "
-                        <li class='nav-item dropdown'>
-                            <a href='#' class='nav-link dropdown-toggl' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false' id='submenu'>".
-                            $_SESSION['imie']." ".$_SESSION['nazwisko']."</a>
-                           
-                            <div class='dropdown-menu' aria-labelledby='submenu'>
-                                <a href='user_lends.php' class='dropdown-item'>Moje wypożyczenia</a>
-                                <a href='settings.php' class='dropdown-item'>Ustawiena konta</a>
-                                <div class='dropdown-divider'></div>
-                                <a href='logout.php' class='dropdown-item'>Wyloguj się </a>
-                            </div>
-                        </li>";
-                    }else {
-                        echo "
-                            <li class='nav-item'>
-                                <a href='login_form.php' class='nav-link'>Logowanie</a>
-                            </li>
-                        ";
-                    }
-                ?>
-            </ul>
-
-        </div>
-    </nav>
-
-</header>
 <main>
     <section class="main_page">
 
@@ -120,61 +41,60 @@
                 if (isset($_SESSION['a-success'])) unset($_SESSION['a-success']);
                 if (isset($_SESSION['a-error'])) unset($_SESSION['a-error']);
                 ?>
-                <form action="includes/add_books.inc.php" method="post">
+                <form action="includes/add_books.inc.php" method="post" enctype="multipart/form-data">
                     <div class="row">
                         <div class="form-group col-12 text-left">
                             <label for="isbn">ISBN</label>
-                            <input name="isbn" id="isbn" class="form-control <?=isset($_SESSION['a_isbn_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
-                            <?php checkSessionVar('a_isbn_err');?>
+                            <input name="isbn" id="isbn" class="form-control <?=isset($_SESSION['a_isbn_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php $utility->checkSessionVar('fill_isbn');?>"  />
+                            <?php $utility->checkSessionVar('a_isbn_err');?>
                         </div>
 
                         <div class="form-group col-12 text-left">
                             <label for="title">Tytuł</label>
-                            <input name="title" id="title" class="form-control <?=isset($_SESSION['a_title_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php checkSessionVar('fill_title');?>" />
-                            <?php checkSessionVar('a_title_err');?>
+                            <input name="title" id="title" class="form-control <?=isset($_SESSION['a_title_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php $utility->checkSessionVar('fill_title');?>" />
+                            <?php $utility->checkSessionVar('a_title_err');?>
                         </div>
                         
                         <div class="form-group col-12 text-left">
                             <label for="author">Autor</label>
-                            <input name="author" id="author" class="form-control <?=isset($_SESSION['a_author_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php checkSessionVar('fill_author');?>" />
-                            <?php checkSessionVar('a_author_err');?>
+                            <input name="author" id="author" class="form-control <?=isset($_SESSION['a_author_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php $utility->checkSessionVar('fill_author');?>" />
+                            <?php $utility->checkSessionVar('a_author_err');?>
                         </div>
                         
                         <div class="form-group col-12 text-left">
                             <label for="o_title">Tytuł oryginału</label>
-                            <input name="o_title" id="o_title" class="form-control <?=isset($_SESSION['a_o_title_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php checkSessionVar('fill_o_title');?>" />
-                            <?php checkSessionVar('a_o_title_err');?>
+                            <input name="o_title" id="o_title" class="form-control <?=isset($_SESSION['a_o_title_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php $utility->checkSessionVar('fill_o_title');?>" />
+                            <?php $utility->checkSessionVar('a_o_title_err');?>
                         </div>
                         
                         <div class="form-group col-12 text-left">
                             <label for="genre">Gatunek</label>
-                            <input name="genre" id="genre" class="form-control <?=isset($_SESSION['l_genre_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php checkSessionVar('fill_genre');?>" />
-                            <?php checkSessionVar('l_genre_err');?>
+                            <input name="genre" id="genre" class="form-control <?=isset($_SESSION['l_genre_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php $utility->checkSessionVar('fill_genre');?>" />
+                            <?php $utility->checkSessionVar('l_genre_err');?>
                         </div>
 
                         <div class="form-group col-12 text-left">
                             <label for="publisher">Wydawnictwo</label>
                             <!-- <input name="publisher" id="publisher" class="form-control <?=isset($_SESSION['l_publisher_err']) ? 'is-invalid' : ''?>" autocomplete="off" /> -->
                             <select name="publisher" id="publisher" class="form-control">
-                                <?php require_once 'get_publishers.php' ?>
+                                <?php echo $utility->get_publishers(); ?>
                             </select>
-                            <?php checkSessionVar('l_publisher_err');?>
+                            <?php $utility->checkSessionVar('l_publisher_err');?>
                         </div>
 
                         <div class="form-group col-12 text-left">
                             <label for="cover">Okładka</label>
-                            <input name="cover" id="cover" class="form-control <?=isset($_SESSION['l_cover_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
-                            <!-- <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="cover" lang="pl-Pl">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input <?=isset($_SESSION['a_cover_err']) ? 'is-invalid' : ''?>" id="cover" lang="pl-Pl" name="cover">
                                 <label class="custom-file-label" for="cover" data-browse="Przeglądaj">Wybierz pliki</label>
-                            </div> -->
-                            <?php checkSessionVar('l_cover_err');?>
+                            </div>
+                            <?php $utility->checkSessionVar('a_cover_err');?>
                         </div>
 
                         <div class="form-group col-12 text-left">
                             <label for="description">Opis</label>
-                            <textarea class="form-control <?=isset($_SESSION['l_description_err']) ? 'is-invalid' : ''?>" id="description" name="description" rows="7"><?php checkSessionVar('fill_description');?></textarea>
-                            <?php checkSessionVar('l_description_err');?>
+                            <textarea class="form-control <?=isset($_SESSION['l_description_err']) ? 'is-invalid' : ''?>" id="description" name="description" rows="7"><?php $utility->checkSessionVar('fill_description');?></textarea>
+                            <?php $utility->checkSessionVar('l_description_err');?>
                         </div>
 
                         <input type="submit" value="Zatwierdź" class="btn btn-primary mx-auto mb-5">
@@ -194,6 +114,12 @@
 	</script>
 	<script src="bootstrap/bootstrap.min.js"></script>
     <!-- <script src="scripts/katalog.js"></script> -->
+    <script>
+        $(".custom-file-input").on("change", function() {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+  </script>
 
 
 </body>

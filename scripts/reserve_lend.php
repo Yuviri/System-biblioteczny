@@ -2,11 +2,10 @@
 
 session_start();
 
-require_once '../includes/get_date.inc.php';
 require_once '../includes/autoloader.inc.php';
 
 if(!isset($_POST['reservation'])){
-    header("Location: ../forms/reserve_lend_form.php");
+    header("Location: reserve_lend_form.php");
 } else {
     $id = $_POST['reservation'];
     $od = $_POST['od'];

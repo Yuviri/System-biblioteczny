@@ -2,7 +2,6 @@
 
 session_start();
 
-require_once 'includes/get_date.inc.php';
 
 if(isset($_GET['id']) && isset($_SESSION['email']) && $_SESSION['uprawnienia']==='czytelnik') {
     
