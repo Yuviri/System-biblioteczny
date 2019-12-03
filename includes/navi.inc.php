@@ -47,6 +47,15 @@ echo
                     <div class="dropdown-divider"></div>
                     <a href="add_books_ex_form.php" class="dropdown-item">Istniejąca pozycja</a>
                 </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="submenu">Statystyki i raporty</a>
+                
+                <div class="dropdown-menu" aria-labelledby="submenu">
+                    <a href="stats.php" class="dropdown-item">Statystyki</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">Raporty</a>
+                </div>
             </li>';
         }
             

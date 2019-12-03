@@ -390,6 +390,22 @@ input::-webkit-calendar-picker-indicator {
 
 
 
+
+
+/* Raporty */
+
+#rep_page{
+    padding: 10px;
+    min-height: 500px;
+}
+
+.c-bg{
+    background-color: #f0edf2 !important;
+}
+
+
+
+
 @media only screen and (max-width: 576px) {
     .register_control{
         width: 400px;

@@ -37,13 +37,15 @@ class AddBook extends Dbc {
 
         if(in_array($actualExt, $allowed)){
             if ($fileError === 0) {
-                if($fileSize <= 10000000){
-                    $finalName = uniqid('', true).strtolower($title).'_'.strtolower($author).'.'.$actualExt;
+                // Tymczasowy rozmiar
+                if($fileSize <= 1000000000000){
+                    // Poprawić nazwy
+                    $finalName = uniqid('', true).'.'.$actualExt;
                     $fileDestination = '../img/covers/'.$finalName;
                     $nameDb = 'img/covers/'.$finalName;
                     move_uploaded_file($fileTmpName, $fileDestination);
                     $this->cover = $nameDb;
-                    return $true;
+                    return true;
 
                 } else{
                     $this->upload_err = "Obrazek jest za duży";
