@@ -15,6 +15,7 @@
         <link href="bootstrap/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="main.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;subset=latin-ext" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
     </head>
 <body>
 
@@ -55,18 +56,14 @@
                         </div> -->
                         
                         <div class="form-group col-12 text-left">
-                            <label for="egzemplarz_input">Nr egzemplarza</label>
-                            <!-- <input type="text" id="egzemplarz" name="egzemplarz" class="form-control" autocomplete="off">
-                            <div class="search-list" id='b-list'>
-
-                            </div> -->
-                            <input list="egzemplarz" name="egzemplarz" id="egzemplarz_input" class="form-control <?=isset($_SESSION['r_egz_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
-                            <datalist id="egzemplarz" >
+                            <label for="egzemplarz_input">Nr wypożyczenia</label>
+                            <input list="wyp" name="wypozyczenie" id="wyp_input" data-show-subtext="true" class="form-control <?=isset($_SESSION['r_wyp_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
+                            <datalist id="wyp" >
                                 <?php
                                    echo $utility->get_books_lended();
                                 ?>
                             </datalist>
-                            <?php $utility->checkSessionVar('r_egz_err');?>
+                            <?php $utility->checkSessionVar('r_wyp_err');?>
                         </div>
                         
                         <div class="form-group col-12 text-left">

@@ -2,14 +2,38 @@
 
 class Statistics extends Dbc
 {
-    private $daily_data_lend;
-    private $daily_data_return;
-    private $monthly_data_lend;
-    private $monthly_data_return;
+    // private $daily_data_lend;
+    // private $daily_data_return;
+    // private $monthly_data_lend;
+    // private $monthly_data_return;
+    private $date;
+    private $d_m;
     private $error;
+    private $empty_flag_l;
+    private $empty_flag_r;
+
+    // public function __construct($date){
+    //     $this->date = $date;
+
+    //     if (strlen($date)==10) {
+    //         $this->dm = 'd';
+    //     } elseif (strlen($date)==7) {
+    //         $this->dm = 'm';
+    //     } else {
+    //         $this->error = "Nieprawidłowa data";
+    //     }
+    // }
+
+    public function get_flags(){
+        if($this->empty_flag_l && $this->empty_flag_r){
+            return true;
+        } else{
+            return false;
+        }   
+    }
 
     public function lend_stats($date){
-        $sql = "SELECT wypozyczenie.id_wyp, wypozyczenie.czytelnik, pracownik.imie, pracownik.nazwisko, szczegoly.nazwa FROM wypozyczenie, pracownik, egzemplarz, szczegoly WHERE wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.od = '$date'";
+        $sql = "SELECT wypozyczenie.id_wyp, wypozyczenie.czytelnik, pracownik.imie, pracownik.nazwisko, szczegoly.nazwa FROM wypozyczenie, pracownik, egzemplarz, szczegoly WHERE wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.od LIKE '%$date%'";
 
         $output = "";
 
@@ -18,7 +42,8 @@ class Statistics extends Dbc
         $rows = $query->rowCount();
 
         if($rows==0){
-            $output = "Brak wyników". " ". $date;
+            $output = "<h3 class='text-center h4'>Brak wypożyczeń na". " ". $date."</h3><br>";
+            $this->empty_flag_l = true;
         } else {
 
             $output = '
@@ -54,13 +79,14 @@ class Statistics extends Dbc
             </tbody>
             </table>
         ';
+        $this->empty_flag_l = false;
         }
-        $this->daily_data_lend = $result;
+        
         return $output;
     }
 
     public function return_stats($date){
-        $sql = "SELECT wypozyczenie.id_wyp, wypozyczenie.czytelnik, pracownik.imie, pracownik.nazwisko, szczegoly.nazwa, wypozyczenie.od FROM wypozyczenie, pracownik, egzemplarz, szczegoly WHERE wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.data_zwrotu = '$date'";
+        $sql = "SELECT wypozyczenie.id_wyp, wypozyczenie.czytelnik, pracownik.imie, pracownik.nazwisko, szczegoly.nazwa, wypozyczenie.od FROM wypozyczenie, pracownik, egzemplarz, szczegoly WHERE wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.data_zwrotu LIKE '%$date%'";
 
         $output = "";
 
@@ -69,7 +95,8 @@ class Statistics extends Dbc
         $rows = $query->rowCount();
 
         if($query->rowCount()==0){
-            $output = "Brak wyników". " ". $date;
+            $output = "<h3 class='text-center h4'>Brak zwrotów na". " ". $date."</h3><br>";
+            $this->empty_flag_r = true;
         } else {
 
             $output = '
@@ -107,118 +134,118 @@ class Statistics extends Dbc
             </tbody>
             </table>
         ';
+        $this->empty_flag_r = false;
         }
         
-        $this->daily_data_return = $result;
         return $output;
     }
 
-    public function monthly_lends($month){
-        $sql = "SELECT wypozyczenie.id_wyp, wypozyczenie.czytelnik, pracownik.imie, pracownik.nazwisko, szczegoly.nazwa FROM wypozyczenie, pracownik, egzemplarz, szczegoly WHERE wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.od LIKE '%$month%'";
+    // public function monthly_lends($month){
+    //     $sql = "SELECT wypozyczenie.id_wyp, wypozyczenie.czytelnik, pracownik.imie, pracownik.nazwisko, szczegoly.nazwa FROM wypozyczenie, pracownik, egzemplarz, szczegoly WHERE wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.od LIKE '%$month%'";
     
-        $output = "";
+    //     $output = "";
 
-        $query = $this->connect()->query($sql);
+    //     $query = $this->connect()->query($sql);
 
-        $rows = $query->rowCount();
+    //     $rows = $query->rowCount();
 
-        if($query->rowCount()==0){
-            $output = "Brak wyników". " ". $month;
-        } else {
+    //     if($query->rowCount()==0){
+    //         $output = "Brak wyników". " ". $month;
+    //     } else {
 
-            $output = '
-            <h1 class="text-center">'.substr($month, 0, 7).'</h1>
-            <table class="table text-center my-5">
-                <thead>
-                    <tr>
-                        <th class="text-center c-bg" colspan="4"><h4 class="font-weight-bold">Wypożyczenia</h4></th>
-                    </tr>
-                    <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Czytelnik</th>
-                    <th scope="col">Pracownik</th>
-                    <th scope="col">Tytuł</th>
-                    </tr>
-                </thead>
-                <tbody>
-                ';
+    //         $output = '
+    //         <h1 class="text-center">'.substr($month, 0, 7).'</h1>
+    //         <table class="table text-center my-5">
+    //             <thead>
+    //                 <tr>
+    //                     <th class="text-center c-bg" colspan="4"><h4 class="font-weight-bold">Wypożyczenia</h4></th>
+    //                 </tr>
+    //                 <tr>
+    //                 <th scope="col">#</th>
+    //                 <th scope="col">Czytelnik</th>
+    //                 <th scope="col">Pracownik</th>
+    //                 <th scope="col">Tytuł</th>
+    //                 </tr>
+    //             </thead>
+    //             <tbody>
+    //             ';
 
-            while($result = $query->fetch()){
-                $output .= '
-                    <tr>
-                        <th scope="row">'.$result['id_wyp'].'</th>
-                        <td>'.$result['czytelnik'].'</td>
-                        <td>'.$result['imie'].' '.$result['nazwisko'].'</td>
-                        <td>'.$result['nazwa'].'</td>
-                    </tr>';
-        }
+    //         while($result = $query->fetch()){
+    //             $output .= '
+    //                 <tr>
+    //                     <th scope="row">'.$result['id_wyp'].'</th>
+    //                     <td>'.$result['czytelnik'].'</td>
+    //                     <td>'.$result['imie'].' '.$result['nazwisko'].'</td>
+    //                     <td>'.$result['nazwa'].'</td>
+    //                 </tr>';
+    //     }
 
-        $output .= '
-             <tr>
-                <th colspan="4" class="text-center">Łącznie wyników: '.$rows.'</th>
-             </tr>
-            </tbody>
-            </table>
-        ';
-        }
+    //     $output .= '
+    //          <tr>
+    //             <th colspan="4" class="text-center">Łącznie wyników: '.$rows.'</th>
+    //          </tr>
+    //         </tbody>
+    //         </table>
+    //     ';
+    //     }
         
-        $this->monthly_data_lend = $result;
-        return $output;
-    }
+    //     $this->monthly_data_lend = $result;
+    //     return $output;
+    // }
 
-    public function monthly_returns($month){
-        $sql = "SELECT wypozyczenie.id_wyp, wypozyczenie.czytelnik, pracownik.imie, pracownik.nazwisko, szczegoly.nazwa, wypozyczenie.od FROM wypozyczenie, pracownik, egzemplarz, szczegoly WHERE wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.data_zwrotu LIKE '%$month%'";
+    // public function monthly_returns($month){
+    //     $sql = "SELECT wypozyczenie.id_wyp, wypozyczenie.czytelnik, pracownik.imie, pracownik.nazwisko, szczegoly.nazwa, wypozyczenie.od FROM wypozyczenie, pracownik, egzemplarz, szczegoly WHERE wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.data_zwrotu LIKE '%$month%'";
     
-        $output = "";
+    //     $output = "";
 
-        $query = $this->connect()->query($sql);
+    //     $query = $this->connect()->query($sql);
 
-        $rows = $query->rowCount();
+    //     $rows = $query->rowCount();
 
-        if($query->rowCount()==0){
-            $output = "Brak wyników". " ". $month;
-        } else {
+    //     if($query->rowCount()==0){
+    //         $output = "Brak wyników". " ". $month;
+    //     } else {
 
-            $output = '
-            <table class="table text-center mb-5">
-                <thead>
-                    <tr>
-                        <th class="text-center c-bg" colspan="5"><h4 class="font-weight-bold">Zwroty</h4></th>
-                    </tr>
-                    <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Czytelnik</th>
-                    <th scope="col">Pracownik</th>
-                    <th scope="col">Tytuł</th>
-                    <th scope="col">Data wypożyczenia</th>
-                    </tr>
-                </thead>
-                <tbody>
-                ';
+    //         $output = '
+    //         <table class="table text-center mb-5">
+    //             <thead>
+    //                 <tr>
+    //                     <th class="text-center c-bg" colspan="5"><h4 class="font-weight-bold">Zwroty</h4></th>
+    //                 </tr>
+    //                 <tr>
+    //                 <th scope="col">#</th>
+    //                 <th scope="col">Czytelnik</th>
+    //                 <th scope="col">Pracownik</th>
+    //                 <th scope="col">Tytuł</th>
+    //                 <th scope="col">Data wypożyczenia</th>
+    //                 </tr>
+    //             </thead>
+    //             <tbody>
+    //             ';
 
-            while($result = $query->fetch()){
-                $output .= '
-                    <tr>
-                        <th scope="row">'.$result['id_wyp'].'</th>
-                        <td>'.$result['czytelnik'].'</td>
-                        <td>'.$result['imie'].' '.$result['nazwisko'].'</td>
-                        <td>'.$result['nazwa'].'</td>
-                        <td>'.$result['od'].'</td>
-                    </tr>';
-        }
+    //         while($result = $query->fetch()){
+    //             $output .= '
+    //                 <tr>
+    //                     <th scope="row">'.$result['id_wyp'].'</th>
+    //                     <td>'.$result['czytelnik'].'</td>
+    //                     <td>'.$result['imie'].' '.$result['nazwisko'].'</td>
+    //                     <td>'.$result['nazwa'].'</td>
+    //                     <td>'.$result['od'].'</td>
+    //                 </tr>';
+    //     }
 
-        $output .= '
-             <tr>
-                <th colspan="5" class="text-center">Łącznie wyników: '.$rows.'</th>
-             </tr>
-            </tbody>
-            </table>
-        ';
-        }
+    //     $output .= '
+    //          <tr>
+    //             <th colspan="5" class="text-center">Łącznie wyników: '.$rows.'</th>
+    //          </tr>
+    //         </tbody>
+    //         </table>
+    //     ';
+    //     }
         
-        $this->monthly_data_return = $result;
-        return $output;
-    }
+    //     $this->monthly_data_return = $result;
+    //     return $output;
+    // }
 
     //Eksport do excela
 
@@ -301,6 +328,57 @@ class Statistics extends Dbc
         echo $output;
     }
 
+
+    public function lend_export($date){
+        $sql = "SELECT wypozyczenie.id_wyp, wypozyczenie.czytelnik, pracownik.imie, pracownik.nazwisko, szczegoly.nazwa FROM wypozyczenie, pracownik, egzemplarz, szczegoly WHERE wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.od LIKE '%$date%'";
+
+        $output = "";
+
+        $query = $this->connect()->query($sql);
+
+        $rows = $query->rowCount();
+
+        if($rows==0){
+            $output = "<h3 class='text-center h4'>Brak wypożyczeń na". " ". $date."</h3><br>";
+            $this->empty_flag_l = true;
+        } else {
+           
+            while($result = $query->fetch()){
+                $data[] = $result;
+            }
+            
+
+            $this->empty_flag_l = false;
+            }
+        
+        return $data;
+    }
+
+    public function return_export($date){
+        $sql = "SELECT wypozyczenie.id_wyp, wypozyczenie.czytelnik, pracownik.imie, pracownik.nazwisko, szczegoly.nazwa, wypozyczenie.od FROM wypozyczenie, pracownik, egzemplarz, szczegoly WHERE wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.data_zwrotu LIKE '%$date%'";
+
+        $output = "";
+
+        $query = $this->connect()->query($sql);
+
+        $rows = $query->rowCount();
+
+        if($rows==0){
+            $output = "<h3 class='text-center h4'>Brak zwrotów na". " ". $date."</h3><br>";
+            $this->empty_flag_r = true;
+        } else {
+           
+            while($result = $query->fetch()){
+                $data[] = $result;
+            }
+            
+
+            $this->empty_flag_r = false;
+            }
+        
+        return $data;
+    }
+    
 
     // Wyświetlanie podsumowań
 
