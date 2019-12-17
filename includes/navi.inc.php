@@ -23,6 +23,20 @@ echo
             </li>
 
 ';
+
+        // Księgozbiór
+
+        echo '
+        <li class="nav-item">
+            <a href="book_list.php" class="nav-link">Księgozbiór</a>
+        </li>
+        ';
+
+        if(isset($_SESSION["zalogowany"]) && $_SESSION["uprawnienia"]=="admin"){
+        echo '<li class="nav-item">
+            <a href="admin_panel.php" class="nav-link">Panel administratora</a>
+        </li>';
+        }
         
         // Sprawdzenie czy zalogowany użytkownik to pracownik oraz dodanie odpowiednich opcji jeśli tak jest
 
@@ -48,14 +62,8 @@ echo
                     <a href="add_books_ex_form.php" class="dropdown-item">Istniejąca pozycja</a>
                 </div>
             </li>
-            <li class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="submenu">Statystyki i raporty</a>
-                
-                <div class="dropdown-menu" aria-labelledby="submenu">
-                    <a href="stats.php" class="dropdown-item">Statystyki</a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">Raporty</a>
-                </div>
+            <li class="nav-item">
+                <a href="stats.php" class="nav-link">Statystyki</a>
             </li>';
         }
             
@@ -91,13 +99,16 @@ echo
             ';
         }
 
-echo '
 
-        </ul>
+        
 
-    </div>
-</nav>
+        echo '
 
-</header>
+                </ul>
 
-';
+            </div>
+        </nav>
+
+        </header>
+
+        ';

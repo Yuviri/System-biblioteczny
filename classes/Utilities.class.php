@@ -54,14 +54,14 @@ class Utilities extends Dbc
 
     public function get_publishers(){
 
-        $query = $this->connect()->query("SELECT id_wydawnictwa, nazwa_wydawnictwa FROM wydawnictwo");
+        $query = $this->connect()->query("SELECT wydawnictwo FROM szczegoly GROUP BY wydawnictwo");
 
         $result = $query->fetchAll();
       
         $output = "";
       
         foreach ($result as $key => $value) {
-          $output.= '<option value="'.$value['id_wydawnictwa'].'">'.$value['nazwa_wydawnictwa'].'</option>';
+          $output.= '<option class="person-item" value="'.$value['wydawnictwo'].'">'.$value['wydawnictwo'].'</option>';
         }
         
         return $output;

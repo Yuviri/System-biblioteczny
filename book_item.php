@@ -7,6 +7,12 @@ if(!isset($_GET['isbn'])){
     exit();
 }
 
+if (!isset($_SESSION['email'])) {
+    $email = false;
+} else {
+    $email = $_SESSION['email'];
+}
+
 $isbn = $_GET['isbn'];
 ?>
 
@@ -65,7 +71,7 @@ $isbn = $_GET['isbn'];
 
             <?php
                 $bookPage = new BookPageView();
-                $bookPage->generateBookPage($isbn, $_SESSION['email']);
+                $bookPage->generateBookPage($isbn, $email);
             ?>
         </section>
         <!-- <section class="comments">

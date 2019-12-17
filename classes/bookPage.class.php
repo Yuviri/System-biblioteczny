@@ -2,7 +2,7 @@
 
 class BookPage extends Dbc{
     protected function getBookPage($isbn){
-        $sql = "SELECT min(egzemplarz.id_egzemplarza) as id, szczegoly.nazwa, szczegoly.autor, szczegoly.tytul_oryginalu, szczegoly.opis, szczegoly.gatunek, szczegoly.cover, wydawnictwo.nazwa_wydawnictwa FROM szczegoly, wydawnictwo, egzemplarz WHERE szczegoly.isbn='$isbn' AND szczegoly.wydawnictwo = wydawnictwo.id_wydawnictwa AND egzemplarz.isbn = szczegoly.isbn GROUP BY szczegoly.isbn";
+        $sql = "SELECT min(egzemplarz.id_egzemplarza) as id, szczegoly.nazwa, szczegoly.autor, szczegoly.tytul_oryginalu, szczegoly.opis, szczegoly.gatunek, szczegoly.cover, szczegoly.wydawnictwo FROM szczegoly, egzemplarz WHERE szczegoly.isbn='$isbn' AND egzemplarz.isbn = szczegoly.isbn GROUP BY szczegoly.isbn";
 
         if($query = $this->connect()->query($sql)){
             

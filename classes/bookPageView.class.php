@@ -22,7 +22,7 @@ class BookPageView extends BookPage{
 
                         <h2 class="title text-left mt-2">'.$value['nazwa'].'</h2>
                         <p class="author text-left">'.$value['autor'].'</p>
-                        <p class="publisher text-left"> Wydawnictwo: '.$value['nazwa_wydawnictwa'].'</p>
+                        <p class="publisher text-left"> Wydawnictwo: '.$value['wydawnictwo'].'</p>
                         <p class="genre text-left">Gatunek: '.$value['gatunek'].'</p>
                         <p class="oryginal_title text-left">Tytuł oryginału: '.$value['tytul_oryginalu'].'</p>
                         
@@ -33,7 +33,19 @@ class BookPageView extends BookPage{
                 <section class="comments">
                 <h1>Opinie czytelników</h1>';
                 
-                //Jeśli nie ma żadnych komentarzy w bazie
+
+                // Wypisywanie sekcji komentarzy
+
+                //Sprawdzanie czy strona jest odwiedzona przez zalogowanego użytkownika
+                if(!$email){
+                    echo '<div class="comment row border d-flex p-3">
+                            <div class="col-12 align-self-center">
+                                <p class="comment-info d-inline-block mx-5">Aby przeczytać komentarze musisz być zalogowanym użytkownikiem</p>
+                            <a href="login_form.php" class="btn btn-primary d-inline-block write-comment px-4">Zaloguj się</a>
+                            </div>
+                        </div>';
+                } else {
+                    //Jeśli nie ma żadnych komentarzy w bazie
                 if($data_comm===0){
                     echo '
                     <div class="comment row border d-flex p-3">
@@ -99,7 +111,8 @@ class BookPageView extends BookPage{
                        <a href="#" class="btn btn-primary d-inline-block write-comment px-4">Napisz</a>
                     </div>
                 </div>';
-                } 
+                    } 
+                }
 
 
                 echo '</section>';

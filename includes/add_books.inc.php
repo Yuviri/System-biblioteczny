@@ -31,6 +31,7 @@ if (!isset($_POST['title'])) {
     $description = clean_input($description);
 
     $publisher = $_POST['publisher'];
+    $publisher = clean_input($publisher);
  
     $cover = $_FILES['cover'];
 

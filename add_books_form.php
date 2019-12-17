@@ -75,10 +75,10 @@
 
                         <div class="form-group col-12 text-left">
                             <label for="publisher">Wydawnictwo</label>
-                            <!-- <input name="publisher" id="publisher" class="form-control <?=isset($_SESSION['l_publisher_err']) ? 'is-invalid' : ''?>" autocomplete="off" /> -->
-                            <select name="publisher" id="publisher" class="form-control">
+                            <input list="publisher" name="publisher" class="form-control <?=isset($_SESSION['l_publisher_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
+                            <datalist id="publisher">
                                 <?php echo $utility->get_publishers(); ?>
-                            </select>
+                            </datalist>
                             <?php $utility->checkSessionVar('l_publisher_err');?>
                         </div>
 

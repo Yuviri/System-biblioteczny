@@ -68,7 +68,11 @@ if(isset($_POST["email"])){
         $queryE->bindValue(':email', $email, PDO::PARAM_STR);
         $queryE->execute();
 
-        if($queryU->rowCount()>0 || $queryE->rowCount()>0){
+        $queryA = $db->prepare("SELECT email FROM administracja WHERE email=:email");
+        $queryA->bindValue(':email', $email, PDO::PARAM_STR);
+        $queryA->execute();
+
+        if($queryU->rowCount()>0 || $queryE->rowCount()>0 || $queryA->rowCount()>0){
             $clean = false;
             $_SESSION["err-email"] = "Istnieje już konto o podanym adresie e-mail";
         }
@@ -85,6 +89,9 @@ if(isset($_POST["email"])){
                 if(isset($_SESSION['fill-surname'])) unset($_SESSION['fill-surname']);
                 if(isset($_SESSION['fill-phone'])) unset($_SESSION['fill-phone']);
                 if(isset($_SESSION['fill-gender'])) unset($_SESSION['fill-gender']);
+
+                header("Location: login_form.php");
+
             } else {
                 throw new PDOException();
             }
@@ -123,12 +130,7 @@ if(isset($_POST["email"])){
         <div class="container register_control mt-1 mx-auto bg-light text-body p-4">
             <form method="POST">
                 <?php
-                    if(isset($_SESSION["err-success"])){
-                        echo "<div class='alert alert-success col-11 mx-auto mt-4' role='alert'>".
-                        $_SESSION["err-success"].
-                    "</div>";
-                    unset($_SESSION["err-success"]);
-                    }
+                    
                     if(isset($_SESSION["err-public"])){
                         echo "<div class='alert alert-warning col-11 mx-auto mt-4' role='alert'>".
                         $_SESSION["err-public"].

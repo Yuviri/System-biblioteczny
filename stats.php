@@ -55,8 +55,6 @@
             
             <div id="rep_page" class="pt-5">
                 
-            <a href='scripts/testy2.php'>Test</a>
-                
             </div>
 
             

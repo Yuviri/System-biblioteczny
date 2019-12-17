@@ -29,8 +29,13 @@
 			$queryE->bindValue(':email', $email, PDO::PARAM_STR);
 			$queryE->execute();
 
+			$queryA = $db->prepare("SELECT * FROM administracja WHERE email=:email");
+			$queryA->bindValue(':email', $email, PDO::PARAM_STR);
+			$queryA->execute();
+
 			$resultU = $queryU->fetch();
 			$resultE = $queryE->fetch();
+			$resultA = $queryA->fetch();
 			
 			//Sprawdzanie istnienia użytkownika
 
@@ -69,7 +74,25 @@
 					header('Location: login_form.php');
 					}
 
-			} else {
+			// Sprawdzanie istnienia admina
+
+			} elseif($queryA->rowCount()>0) {
+			
+			if(password_verify($password, $resultA["haslo"])){
+				$_SESSION['zalogowany'] = true;	
+				$_SESSION['email'] = $resultA['email'];
+				$_SESSION['imie'] = $resultA['imie'];
+				$_SESSION['nazwisko'] = $resultA['nazwisko'];
+				$_SESSION['uprawnienia'] = "admin";
+
+
+				header('Location: index.php');
+			} else{
+				$_SESSION['err-login'] = '<div class="invalid-feedback">Nieprawidłowy login lub hasło</div>';
+				header('Location: login_form.php');
+				}
+
+		}else {
 				
 				$_SESSION['err-login'] = '<div class="invalid-feedback">Nieprawidłowy login lub hasło</div>';
 				header('Location: login_form.php');

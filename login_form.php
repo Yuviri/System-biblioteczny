@@ -43,6 +43,12 @@
                     if(isset($_GET["redirect"])){
                         echo "<div class='alert alert-info col-11 mx-auto mt-2' role='alert'>Rezerwacji może dokonać tylko zalogowany użytkownik. Zaloguj się korzystając z formularza poniżej lub załóż konto.</div>";
                     }
+                    if(isset($_SESSION["err-success"])){
+                        echo "<div class='alert alert-success col-11 mx-auto mt-4' role='alert'>".
+                        $_SESSION["err-success"].
+                    "</div>";
+                    unset($_SESSION["err-success"]);
+                    }
                     ?>
 
                     <div class="form-group col-12">

@@ -14,8 +14,9 @@ h1
 {
 	font-size: 36px;
 	font-weight: 400;
-	color: rgb(91, 28, 128);
-	margin: 20px;
+	color: rgb(36, 32, 39);
+    padding: 20px;
+    letter-spacing: 2px;
 }
 
 .main_page h1
@@ -403,6 +404,26 @@ input::-webkit-calendar-picker-indicator {
     background-color: #f0edf2 !important;
 }
 
+
+/* Panel admina */
+
+.box_header{
+    font-size: 22px;
+}
+
+.box_header:hover{
+    cursor: pointer;
+}
+
+.box_content{
+    display: none;
+}
+
+.w_form{
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
 
 
 
