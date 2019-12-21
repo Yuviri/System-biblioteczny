@@ -11,9 +11,9 @@ class BookPageView extends BookPage{
         if ($data) {
             foreach ($data as $key => $value) {
                 echo '<div class="row basic_info">
-                    <div class="cover col-md-4 p-2 text-center">
+                    <div class="cover_b col-md-4 p-2 text-center">
                         <img src="'.$value['cover'].'" alt="'.$value['nazwa'].'" class="img-thumbnail">
-                        <div class="item_controls mt-3 px-4">
+                        <div class="item_controls mt-3 px-4 d-block">
                             <a href="reserve.php?id='.$value['id'].'" class="btn btn-primary item_page_res">Zarezerwuj</a>
                         </div>
                     </div>
