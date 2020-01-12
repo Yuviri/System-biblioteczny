@@ -1,8 +1,13 @@
 <?php
     session_start();
-    require_once 'includes/autoloader.inc.php';
-    $utility = new Utilities();
-      
+
+    if ($_SESSION['uprawnienia']!='P') {
+        header('Location: index.php');
+        exit();
+    } else{
+        require_once 'includes/autoloader.inc.php';
+        $utility = new Utilities();
+    } 
 ?>
 
 <!DOCTYPE html>

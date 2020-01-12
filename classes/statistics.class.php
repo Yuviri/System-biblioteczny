@@ -33,7 +33,7 @@ class Statistics extends Dbc
     }
 
     public function lend_stats($date){
-        $sql = "SELECT wypozyczenie.id_wyp, wypozyczenie.czytelnik, pracownik.imie, pracownik.nazwisko, szczegoly.nazwa FROM wypozyczenie, pracownik, egzemplarz, szczegoly WHERE wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.od LIKE '%$date%'";
+        $sql = "SELECT wypozyczenie.id_wyp, wypozyczenie.czytelnik, uzytkownik.imie, uzytkownik.nazwisko, szczegoly.nazwa, wypozyczenie.od FROM wypozyczenie, egzemplarz, szczegoly, uzytkownik WHERE wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.od LIKE '%$date%' AND imie in (SELECT imie FROM uzytkownik WHERE wypozyczenie.pracownik = uzytkownik.email) AND nazwisko in (SELECT nazwisko FROM uzytkownik WHERE wypozyczenie.pracownik = uzytkownik.email)";
 
         $output = "";
 
@@ -64,6 +64,7 @@ class Statistics extends Dbc
                 ';
 
             while($result = $query->fetch()){
+                
                 $output .= '
                     <tr>
                         <th scope="row">'.$result['id_wyp'].'</th>
@@ -86,7 +87,7 @@ class Statistics extends Dbc
     }
 
     public function return_stats($date){
-        $sql = "SELECT wypozyczenie.id_wyp, wypozyczenie.czytelnik, pracownik.imie, pracownik.nazwisko, szczegoly.nazwa, wypozyczenie.od FROM wypozyczenie, pracownik, egzemplarz, szczegoly WHERE wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.data_zwrotu LIKE '%$date%'";
+        $sql = "SELECT wypozyczenie.id_wyp, wypozyczenie.czytelnik, uzytkownik.imie, uzytkownik.nazwisko, szczegoly.nazwa, wypozyczenie.od FROM wypozyczenie, egzemplarz, szczegoly, uzytkownik WHERE wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.data_zwrotu LIKE '%$date%' AND imie in (SELECT imie FROM uzytkownik WHERE wypozyczenie.pracownik = uzytkownik.email) AND nazwisko in (SELECT nazwisko FROM uzytkownik WHERE wypozyczenie.pracownik = uzytkownik.email)";
 
         $output = "";
 
@@ -330,7 +331,7 @@ class Statistics extends Dbc
 
 
     public function lend_export($date){
-        $sql = "SELECT wypozyczenie.id_wyp, wypozyczenie.czytelnik, pracownik.imie, pracownik.nazwisko, szczegoly.nazwa FROM wypozyczenie, pracownik, egzemplarz, szczegoly WHERE wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.od LIKE '%$date%'";
+        $sql = "SELECT wypozyczenie.id_wyp, wypozyczenie.czytelnik, uzytkownik.imie, uzytkownik.nazwisko, szczegoly.nazwa, wypozyczenie.od FROM wypozyczenie, egzemplarz, szczegoly, uzytkownik WHERE wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.od LIKE '%$date%' AND imie in (SELECT imie FROM uzytkownik WHERE wypozyczenie.pracownik = uzytkownik.email) AND nazwisko in (SELECT nazwisko FROM uzytkownik WHERE wypozyczenie.pracownik = uzytkownik.email)";
 
         $output = "";
 
@@ -355,7 +356,7 @@ class Statistics extends Dbc
     }
 
     public function return_export($date){
-        $sql = "SELECT wypozyczenie.id_wyp, wypozyczenie.czytelnik, pracownik.imie, pracownik.nazwisko, szczegoly.nazwa, wypozyczenie.od FROM wypozyczenie, pracownik, egzemplarz, szczegoly WHERE wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.data_zwrotu LIKE '%$date%'";
+        $sql = "SELECT wypozyczenie.id_wyp, wypozyczenie.czytelnik, uzytkownik.imie, uzytkownik.nazwisko, szczegoly.nazwa, wypozyczenie.od FROM wypozyczenie, egzemplarz, szczegoly, uzytkownik WHERE wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.data_zwrotu LIKE '%$date%' AND imie in (SELECT imie FROM uzytkownik WHERE wypozyczenie.pracownik = uzytkownik.email) AND nazwisko in (SELECT nazwisko FROM uzytkownik WHERE wypozyczenie.pracownik = uzytkownik.email)";
 
         $output = "";
 

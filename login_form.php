@@ -25,7 +25,8 @@
     <section>
         <div class="container register_control mt-1 mx-auto bg-light text-body p-4">
             <form action="login.php" method="POST">
-                <div class="row mt-4">
+                <div class="row">
+                    <h1 class="d-block mx-auto">Logowanie</h1>
 
                 <?php
                     if(isset($_SESSION["err-public"])){

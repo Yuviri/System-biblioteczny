@@ -7,7 +7,8 @@ class AdminPanel extends Dbc
 
 
     public function generate_workers(){
-        $sql = "SELECT * FROM pracownik";
+        $sql = "SELECT * FROM uzytkownik WHERE uprawnienia='P'";
+        $counter = 1;
 
         if(!$query = $this->connect()->query($sql)){
             $this->error = "Błąd połączenia z bazą danych";
@@ -19,19 +20,19 @@ class AdminPanel extends Dbc
                 
                 echo '<table class="table w_table">
                             <thead class="thead-dark">
-                                <tr><th>#</th><th>Imię</th><th>Nazwisko</th><th>Email</th><th>Telefon</th><th>Akcja</th></tr>
+                                <tr><th>#</th><th>Imię</th><th>Nazwisko</th><th>Email</th><th>Telefon</th></tr>
                             </thead>
                             <tbody>';
 
                 foreach ($result as $key => $value) {
                     echo '<tr>
-                            <td>'.$value['id_pracownika'].'</td>
+                            <td>'.$counter.'</td>
                             <td>'.$value['imie'].'</td>
                             <td>'.$value['nazwisko'].'</td>
                             <td>'.$value['email'].'</td>
                             <td>'.$value['telefon'].'</td>
-                            <td><a href="#" class="btn btn-danger">Usuń</a></td>
                         </tr>';
+                        $counter++;
                 }
                 echo '</tbody>
                     </table>';
@@ -39,13 +40,33 @@ class AdminPanel extends Dbc
         }
     }
 
+    public function checkWorker($email){
+        // Funkcja sprawdza, czy istnieje uzytkownik o podanym mailu
 
-    public function add_worker($name, $surname, $email, $password, $gender, $phone){
-        $sql = "INSERT INTO pracownik VALUES(NULL, ?, ?, ?, ?, ?, ?)";
+        $sql = "SELECT * FROM uzytkownik WHERE email=?";
+
+        $query = $this->connect()->prepare($sql);
+        $query->execute([$email]);
+
+        if($query->rowCount()>0){
+            return false;
+        } else{
+            return true;
+        }
+    }
+
+    public function add_worker($email, $password, $name, $surname, $gender, $phone){
+        $sql = "INSERT INTO uzytkownik VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+
+        if($gender==='K'){
+            $avatar = 'img/avatars/defaultK.png';
+        } else {
+            $avatar = 'img/avatars/defaultM.png';
+        }
 
         $query = $this->connect()->prepare($sql);
         
-        if($query->execute([$name, $surname, $email, $password, $gender, $phone])){
+        if($query->execute([$email, $password, $name, $surname, $gender, $phone, $avatar, 'P'])){
             $_SESSION['reg_a_success'] = '<div class="alert alert-success">Pomyślnie dodano pracownika</div>';
             header('Location: ../admin_panel.php?success');
         } else {

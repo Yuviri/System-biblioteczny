@@ -30,7 +30,7 @@
 
                 <div class="row">
                 
-                    <div class="filters_pane col-12 p-2">
+                    <div class="filters_pane bg-secondary border col-12 p-2">
 
                         <form action="search.php" method="post" class="form-inline float-left">
                             <select name="asc_desc" id="asc_desc" class="form-control mx-2">
@@ -68,7 +68,7 @@
                                     <div class="book_info col-8">
                                         <h2 class="h3 text-left mt-4">'.$value["nazwa"].'</h2>
                                         <h3 class="h4 text-left mt-2">'.$value["autor"].'</h3>
-                                        <p class="description text-justify mt-4">'.substr($value["opis"],0,360)."...".'</p>
+                                        <p class="description text-justify mt-4">'.$value["opis"]."...".'</p>
                                     </div>
                                     <div class="book_tab_controls col-2 text-center d-flexbox align-self-center">
                                         <a href="reserve.php?id='.$value['id_egzemplarza'].'" class="btn btn-primary mt-5">Zarezerwuj</a>

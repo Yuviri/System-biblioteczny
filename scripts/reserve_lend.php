@@ -5,18 +5,18 @@ session_start();
 require_once '../includes/autoloader.inc.php';
 
 if(!isset($_POST['reservation'])){
-    header("Location: reserve_lend_form.php");
+    header("Location: ../reserve_lend_form.php");
 } else {
     $id = $_POST['reservation'];
     $od = $_POST['od'];
     $do = $_POST['do'];
-    $pracownik = $_SESSION['id'];
+    $pracownik = $_SESSION['email'];
     
     $conn = mysqli_connect('localhost', 'root', '', 'library');
     
     $sql1 = "SELECT czytelnik, egzemplarz FROM rezerwacja WHERE id_rez='$id'";
     if(!$result1=$conn->query($sql1)){
-        echo 'Błąd pierwszego zapytania!';
+        $_SESSION['lendr-err'] = '<div class="alert alert-danger">Dana rezerwacja nie istnieje</div>';
         exit();
     }
 
@@ -35,19 +35,19 @@ if(!isset($_POST['reservation'])){
     $sql4 = "DROP EVENT IF EXISTS reservation_".$ide.";";
 
     if(!$result2=$conn->query($sql2)){
-        $_SESSION['lendr-err'] = '<div class="alert alert-danger">Błąd drugiego zapytania</div>';
+        $_SESSION['lendr-err'] = '<div class="alert alert-danger">Błąd zmiany statusu rezerwacji</div>';
         header("Location: ../reserve_lend_form.php");
         exit();
     }
 
     if(!$result3=$conn->query($sql3)){
-        $_SESSION['lendr-err'] = '<div class="alert alert-danger">Błąd trzeciego zapytania</div>';
+        $_SESSION['lendr-err'] = '<div class="alert alert-danger">Błąd obsługi wypożyczenia</div>';
         header("Location: ../reserve_lend_form.php");
         exit();
     }
 
     if(!$result4=$conn->query($sql4)){
-        $_SESSION['lendr-err'] = '<div class="alert alert-danger">Błąd czwartego zapytania</div>';
+        $_SESSION['lendr-err'] = '<div class="alert alert-danger">Błąd usunięcia rezerwacji</div>';
         header("Location: ../reserve_lend_form.php");
         exit();
     }

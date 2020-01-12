@@ -59,7 +59,7 @@
 
                     $email = $_SESSION['email'];
 
-                    $query = $db->query("SELECT wypozyczenie.id_wyp, pracownik.imie, pracownik.nazwisko, wypozyczenie.od, wypozyczenie.do, wypozyczenie.data_zwrotu, szczegoly.nazwa FROM wypozyczenie, pracownik, szczegoly, egzemplarz WHERE wypozyczenie.czytelnik='$email' AND wypozyczenie.pracownik=pracownik.id_pracownika AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.data_zwrotu IS NULL");
+                    $query = $db->query("SELECT wypozyczenie.id_wyp, uzytkownik.imie, uzytkownik.nazwisko, wypozyczenie.od, wypozyczenie.do, wypozyczenie.data_zwrotu, szczegoly.nazwa FROM wypozyczenie, szczegoly, egzemplarz, uzytkownik WHERE wypozyczenie.czytelnik='$email' AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND wypozyczenie.data_zwrotu IS NULL AND imie in (SELECT imie FROM uzytkownik WHERE wypozyczenie.pracownik = uzytkownik.email) AND nazwisko in (SELECT nazwisko FROM uzytkownik WHERE wypozyczenie.pracownik = uzytkownik.email)");
                     $result = $query->fetchAll();
 
                     $queryR = $db->query("SELECT rezerwacja.id_rez, rezerwacja.od, rezerwacja.do, szczegoly.nazwa, rezerwacja.egzemplarz FROM rezerwacja, szczegoly, egzemplarz WHERE rezerwacja.czytelnik='$email' AND rezerwacja.egzemplarz=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND rezerwacja.status='aktywna'");

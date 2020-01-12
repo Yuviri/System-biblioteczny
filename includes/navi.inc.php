@@ -8,7 +8,7 @@ echo
 
 <header>
 
-<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+<nav class="navbar navbar-dark navbg navbar-expand-lg">
     <a href="index.php" class="navbar-brand d-inline-block">System Biblioteczny</a>
     
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Przełącznik nawigacji">
@@ -32,7 +32,7 @@ echo
         </li>
         ';
 
-        if(isset($_SESSION["zalogowany"]) && $_SESSION["uprawnienia"]=="admin"){
+        if(isset($_SESSION["zalogowany"]) && $_SESSION["uprawnienia"]=="A"){
         echo '<li class="nav-item">
             <a href="admin_panel.php" class="nav-link">Panel administratora</a>
         </li>';
@@ -40,7 +40,7 @@ echo
         
         // Sprawdzenie czy zalogowany użytkownik to pracownik oraz dodanie odpowiednich opcji jeśli tak jest
 
-        if(isset($_SESSION["zalogowany"]) && $_SESSION["uprawnienia"]=="pracownik"){
+        if(isset($_SESSION["zalogowany"]) && $_SESSION["uprawnienia"]=="P"){
             echo '
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="submenu">Wypożyczenia i zwroty</a>

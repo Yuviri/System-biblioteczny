@@ -3,7 +3,7 @@
 session_start();
 
 
-if(isset($_GET['id']) && isset($_SESSION['email']) && $_SESSION['uprawnienia']==='czytelnik') {
+if(isset($_GET['id']) && isset($_SESSION['email']) && $_SESSION['uprawnienia']==='U') {
     
     $id = $_GET['id'];
     $id_n = $id;
@@ -33,7 +33,7 @@ if(isset($_GET['id']) && isset($_SESSION['email']) && $_SESSION['uprawnienia']==
 
     $conn->close();
 
-} else if (isset($_GET['id']) && isset($_SESSION['email']) && $_SESSION['uprawnienia']==='pracownik') {
+} else if (isset($_GET['id']) && isset($_SESSION['email']) && ($_SESSION['uprawnienia']==='P' || $_SESSION['uprawnienia']==="A")) {
     header("Location: katalog.php");
 } else {
     header('Location: login_form.php?redirect');

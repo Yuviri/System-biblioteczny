@@ -109,6 +109,7 @@ $isbn = $_GET['isbn'];
 	</script>
 	<script src="bootstrap/bootstrap.min.js"></script>
     <script src="scripts/katalog.js"></script>
+    <script src="scripts/comments.js"></script>
 
 
 </body>

@@ -23,7 +23,7 @@
         }
         $od = filter_input(INPUT_POST, 'od');
         $do = filter_input(INPUT_POST, 'do');
-        $pracownik = $_SESSION['id'];
+        $pracownik = $_SESSION['email'];
 
         
 

@@ -60,26 +60,28 @@ if(isset($_POST["email"])){
 
     try {
         // Sprawdzanie czy istnieje konto o podanym mailu
-        $queryU = $db->prepare("SELECT email FROM uzytkownik WHERE email=:email");
-        $queryU->bindValue(':email', $email, PDO::PARAM_STR);
-        $queryU->execute();
+        $query = $db->prepare("SELECT email FROM uzytkownik WHERE email=:email");
+        $query->bindValue(':email', $email, PDO::PARAM_STR);
+        $query->execute();
 
-        $queryE = $db->prepare("SELECT email FROM pracownik WHERE email=:email");
-        $queryE->bindValue(':email', $email, PDO::PARAM_STR);
-        $queryE->execute();
-
-        $queryA = $db->prepare("SELECT email FROM administracja WHERE email=:email");
-        $queryA->bindValue(':email', $email, PDO::PARAM_STR);
-        $queryA->execute();
-
-        if($queryU->rowCount()>0 || $queryE->rowCount()>0 || $queryA->rowCount()>0){
+        if($query->rowCount()>0){
             $clean = false;
             $_SESSION["err-email"] = "Istnieje już konto o podanym adresie e-mail";
         }
         
 
         if($clean){
-            $ins = $db->query("INSERT INTO uzytkownik VALUES('$email', '$password_h', '$name', '$surname', '$gender', '$phone', 'img/avatars/defaultM.png')");
+
+            // Przypisanie domyślnego awatara w zależności od płci
+
+            if($gender==="K"){
+                $avatar = 'img/avatars/defaultK.png';
+            } else {
+                $avatar = 'img/avatars/defaultM.png';
+            }
+
+
+            $ins = $db->query("INSERT INTO uzytkownik VALUES('$email', '$password_h', '$name', '$surname', '$gender', '$phone', '$avatar', 'U')");
             
             if($ins){
                 $_SESSION["err-success"] = "Rejestracja przebiegła pomyślnie. Możesz zalogować się na swoje konto";
@@ -129,6 +131,9 @@ if(isset($_POST["email"])){
     <section>
         <div class="container register_control mt-1 mx-auto bg-light text-body p-4">
             <form method="POST">
+
+                <h1 class="d-block mx-auto text-center">Rejestracja</h1>
+
                 <?php
                     
                     if(isset($_SESSION["err-public"])){

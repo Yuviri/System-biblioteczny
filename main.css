@@ -24,7 +24,9 @@ h1
 	text-align: center;
 }
 
-
+.navbg{
+    background-color: #21664f !important;
+}
 
 
 
@@ -260,7 +262,9 @@ h1
 
 
 
-
+.th-custom{
+    background-color: #21664f;
+}
 
 
 
@@ -270,7 +274,7 @@ h1
 
 
 .filters_pane{
-    background-color: #212529;
+    /* background-color: #21664f; */
     
 }
 
@@ -308,6 +312,10 @@ h1
 
 .description{
     font-size: 15px;
+    overflow: hidden;
+    display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;  
 }
 
 /* Wypożyczenia i zwroty */

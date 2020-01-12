@@ -2,7 +2,7 @@
     session_start();
     require_once 'includes/autoloader.inc.php';
     
-    if(!isset($_SESSION["zalogowany"]) || $_SESSION['uprawnienia']!='pracownik'){
+    if(!isset($_SESSION["zalogowany"]) || $_SESSION['uprawnienia']!='P'){
         header("Location: index.php");
     }
     

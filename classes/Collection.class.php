@@ -23,7 +23,7 @@
             $n = 0;
 
             echo '<table class="table table-striped">
-                <thead class="thead-dark">
+                <thead class="th-custom text-light">
                     <tr>
                         <th>#</th>
                         <th>Tytuł</th>

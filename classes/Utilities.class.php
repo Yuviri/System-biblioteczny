@@ -39,7 +39,7 @@ class Utilities extends Dbc
 
     public function get_users(){
 
-        $query = $this->connect()->query("SELECT imie, nazwisko, email FROM uzytkownik");
+        $query = $this->connect()->query("SELECT imie, nazwisko, email FROM uzytkownik WHERE uprawnienia = 'U'");
 
         $result = $query->fetchAll();
       

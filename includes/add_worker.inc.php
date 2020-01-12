@@ -9,6 +9,8 @@
         header('Location: ../admin_panel.php');
     } else {
         
+        $panel = new AdminPanel();
+
         // Pobranie danych z posta i walidacja
 
         $flag = false;
@@ -18,6 +20,11 @@
        
         if(!$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)){
             $_SESSION['email_a_err'] = 'Niedozwolony email';
+            $flag = true;
+        }
+
+        if (!$panel->checkWorker($email)) {
+            $_SESSION['email_a_err'] = 'Podany email jest już zajęty';
             $flag = true;
         }
 
@@ -34,8 +41,8 @@
 
         $plec = clean_input($_POST['plec']);
 
-        if(strlen($_POST['telefon']) <> 9){
-            $_SESSION['telefon_a_err'] = 'Telefon musi się składać z 9 cyfr';
+        if(strlen($_POST['telefon']) < 9 || strlen($_POST['telefon']) > 20){
+            $_SESSION['telefon_a_err'] = 'Telefon musi się składać z od 9 do 20 cyfr';
             $flag = true;
         }
         $telefon = clean_input($_POST['telefon']);
@@ -45,8 +52,8 @@
         if($flag){
             header('Location: ../admin_panel.php');
         } else {
-            $panel = new AdminPanel();
-            $panel->add_worker($imie, $nazwisko, $email, $haslo, $plec, $telefon);
+            
+            $panel->add_worker($email, $haslo, $imie, $nazwisko, $plec, $telefon);
         }
 
 

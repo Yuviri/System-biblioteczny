@@ -1,5 +1,8 @@
 <?php
     session_start();
+
+    $year = date("Y");
+    $month = date("m");
 ?>
 
 <!DOCTYPE html>
@@ -32,22 +35,30 @@
                 
             <div class="row justify-content-around pt-2">
                 <!-- <input type="date" name="date" id="date" class="form-control col-md-6" onkeyup="day_search()"> -->
-                <select name="rok" id="rok" disabled="disabled" class="form-control col-md-3">
-                    <option value="2019">2019</option>
+                <select name="rok" id="rok" class="form-control col-md-3">
+                    <!-- <option value="2019">2019</option> -->
+
+                    <?php
+
+                        for ($i=$year; $i >= 2019 ; $i--) { 
+                            echo '<option value="'.$i.'">'.$i.'</option>';
+                        }
+
+                    ?>
                 </select>
                 <select name="miesiac" id="miesiac" class="form-control col-md-3">
-                    <option value="01">Styczeń</option>
-                    <option value="02">Luty</option>
-                    <option value="03">Marzec</option>
-                    <option value="04">Kwiecień</option>
-                    <option value="05">Maj</option>
-                    <option value="06">Czerwiec</option>
-                    <option value="07">Lipiec</option>
-                    <option value="08">Sierpień</option>
-                    <option value="09" selected="selected">Wrzesień</option>
-                    <option value="10">Październik</option>
-                    <option value="11">Listopad</option>
-                    <option value="12">Grudzień</option>
+                    <option value="01" <?=$month==='01' ? 'selected="selected"' : '' ?>>Styczeń</option>
+                    <option value="02" <?=$month==='02' ? 'selected="selected"' : '' ?>>Luty</option>
+                    <option value="03" <?=$month==='03' ? 'selected="selected"' : '' ?>>Marzec</option>
+                    <option value="04" <?=$month==='04' ? 'selected="selected"' : '' ?>>Kwiecień</option>
+                    <option value="05" <?=$month==='05' ? 'selected="selected"' : '' ?>>Maj</option>
+                    <option value="06" <?=$month==='06' ? 'selected="selected"' : '' ?>>Czerwiec</option>
+                    <option value="07" <?=$month==='07' ? 'selected="selected"' : '' ?>>Lipiec</option>
+                    <option value="08" <?=$month==='08' ? 'selected="selected"' : '' ?>>Sierpień</option>
+                    <option value="09" <?=$month==='09' ? 'selected="selected"' : '' ?>>Wrzesień</option>
+                    <option value="10" <?=$month==='10' ? 'selected="selected"' : '' ?>>Październik</option>
+                    <option value="11" <?=$month==='11' ? 'selected="selected"' : '' ?>>Listopad</option>
+                    <option value="12" <?=$month==='12' ? 'selected="selected"' : '' ?>>Grudzień</option>
                 </select>
                 <input type="number" class="form-control col-md-3" name="dzien" id="dzien" placeholder="Wpisz dzień">
                 <button class="text-center col-md-2 btn btn-primary" onclick='day_search()'>Wyświetl</button>

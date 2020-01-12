@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if($_SESSION['uprawnienia']!='pracownik'){
+    if($_SESSION['uprawnienia']!='P'){
         header('Location: index.php');
     }
 

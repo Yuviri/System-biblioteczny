@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    if (!isset($_SESSION['zalogowany']) || $_SESSION['uprawnienia']!='admin') {
+    if (!isset($_SESSION['zalogowany']) || $_SESSION['uprawnienia']!='A') {
         header('Location: index.php');
     }
 ?>
