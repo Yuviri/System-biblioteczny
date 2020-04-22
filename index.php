@@ -26,9 +26,40 @@
 
         <div class="container mt-4 bg-light text-body">
             <header>
-                <h1>Strona główna projektu dyplomowego</h1>
-                
+                <h1>Witaj w systemie bibliotecznym</h1>
             </header>
+
+            <?php
+            
+            if(isset($_SESSION['zalogowany']) && $_SESSION['uprawnienia']=='U'){
+                echo '
+                <article>
+                    <div class="row p-5">
+                        <p class="col=12 text-justify">Tutaj możesz zarezerwować swoje ulubione książki oraz podzielić się opiniami na ich temat.</p>
+                        <p class="col=12 text-justify">Witaj '.$_SESSION['imie'].'. Aby skorzystać z katalogu lub przejrzeć swoją aktywność w systemie skorzystaj z menu lub wybierz opcję poniżej. Aby zakończyć korzystanie z systemu skorzystaj z opcji wylogowania, klikając w swoje imię i nazwisko na górze strony.</p>
+                        <a href="katalog.php" class="btn btn-secondary col-md-5 mx-auto mt-2"> Katalog</a>
+                        <a href="user_lends.php" class="btn btn-secondary col-md-5 mx-auto mt-2"> Aktywność</a>
+                    </div>
+                </article>
+                ';
+            } elseif(isset($_SESSION['zalogowany']) && ($_SESSION['uprawnienia']=='P' || $_SESSION['uprawnienia']=='A')){
+                echo '';
+            }else {
+                echo '
+                <article>
+                    <div class="row p-5">
+                        <p class="col=12 text-justify">Tutaj możesz zarezerwować swoje ulubione książki oraz podzielić się opiniami na ich temat.</p>
+                        <p class="col=12 text-justify">Nie jesteś zalogowanym użytkownikiem. Aby się zalogować lub stworzyć konto wciśnij odpowiednią opcję w menu lub wybierz opcję poniżej.</p>
+                        <a href="register.php" class="btn btn-secondary col-md-5 mx-auto mt-2"> Rejestracja</a>
+                        <a href="login_form.php" class="btn btn-secondary col-md-5 mx-auto mt-2"> Logowanie</a>
+                    </div>
+                </article>
+                ';
+            }
+
+            ?>
+
+            
         </div>
  
     </section>

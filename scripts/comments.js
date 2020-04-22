@@ -28,20 +28,11 @@ $('#write_btn').click(function addingComm(){
     '</div>'+
   '</div>';
 
-    
-
-    // $('#new_comment_text').html('<textarea id="comment_text" class="comment-info d-inline-block form-control"></textarea>'+
-    // '<div class="text-center mx-auto">'+
-    // '<button class="btn btn-secondary write-comment px-4 mx-2" id="cancel_btn">Anuluj</button>'+
-    // '<button class="btn btn-success write-comment px-4 mx-2" id="add_btn">Dodaj</button>'+
-    // '</div>');
 
     $('#cancel_btn').click(function (){
         $('#new_comment_text').html(original_content);
         return;
     });
-
-   
 
 });
 
@@ -53,7 +44,6 @@ $('#add_btn').click(function (){
 
     $.post('comment_handler.php', {author: email, book: isbn, comment: content, request: 'new'}, function(output){
         $(".modal-body").html(output);
-        // $('#new_comment').html('');
         location.reload();
     });
 });

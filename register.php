@@ -37,22 +37,9 @@ if(isset($_POST["email"])){
     $_SESSION['fill-name'] = $name;
     $_SESSION['fill-surname'] = $surname;
 
-
-    // $street = $_POST["street"];
-    // $postal1 = $_POST["postal1"];
-    // $postal2 = $_POST["postal2"];
-    // $city = $_POST["city"];
-
-    // if(!ctype_digit($postal1) || !ctype_digit($postal2)){
-    //     $clean = false;
-    //     $_SESSION["err-postal"] = "Kod pocztowy jest nieprawidłowy";
-    // }
-
-    // $adress = $street." ".$postal1."-".$postal2." ".$city;
-
     $gender = $_POST["gender"];
     $_SESSION['fill-gender'] = $gender;
-    // $date = $_POST["date"];
+
     $phone =  filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_STRING);
     $_SESSION['fill-phone'] = $phone;
 
@@ -81,9 +68,9 @@ if(isset($_POST["email"])){
             }
 
 
-            $ins = $db->query("INSERT INTO uzytkownik VALUES('$email', '$password_h', '$name', '$surname', '$gender', '$phone', '$avatar', 'U')");
+            $ins = $db->prepare("INSERT INTO uzytkownik VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
             
-            if($ins){
+            if($ins->execute([$email, $password_h, $name, $surname, $gender, $phone, $avatar, 'U'])){
                 $_SESSION["err-success"] = "Rejestracja przebiegła pomyślnie. Możesz zalogować się na swoje konto";
                
                 if(isset($_SESSION['fill-email'])) unset($_SESSION['fill-email']);
@@ -187,28 +174,6 @@ if(isset($_POST["email"])){
                         <label for="surname">Nazwisko</label>
                         <input type="text" name="surname" value="<?=isset($_SESSION['fill-surname']) ? $_SESSION['fill-surname'] : ''?>" id="surname" class="form-control">
                     </div>
-                    <!-- <div class="form-group col-12">
-                        <label for="street">Ulica</label>
-                        <input type="text" name="street" id="street" class="form-control">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="postal1" class="w-100">Kod pocztowy</label>
-                        <input type="text" name="postal1" id="postal1" class="form-control col-3  d-inline-block <?php 
-                            if(isset($_SESSION["err-postal"])) echo "is-invalid";
-                        ?>" maxlength="2">
-                        <label for="postal2" class="d-inline-block  font-weight-bold">&mdash;</label>
-                        <input type="text" name="postal2" id="postal2" class="form-control col-8 d-inline-block <?php 
-                            if(isset($_SESSION["err-postal"])) echo "is-invalid";
-                        ?>" maxlength="3">
-                        <div class="invalid-feedback"><?php 
-                        if(isset($_SESSION["err-postal"])) echo $_SESSION["err-postal"]; 
-                        unset($_SESSION["err-postal"]);
-                        ?></div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="city">Miasto</label>
-                        <input type="text" name="city" id="city" class="form-control">
-                    </div> -->
                     <div class="form-group col-md-6">
                         <label for="gender">Płeć</label>
                         <select name="gender" id="gender" class="form-control">
@@ -216,10 +181,6 @@ if(isset($_POST["email"])){
                             <option value="K" <?=(isset($_SESSION['fill-gender']) && $_SESSION['fill-gender']=="K") ? 'selected="selected"' : ''?>>Kobieta</option>
                         </select>
                     </div>
-                    <!-- <div class="form-group col-md-6">
-                        <label for="date">Data urodzenia</label>
-                        <input type="date" name="date" id="date" class="form-control">
-                    </div> -->
                     <div class="form-group col-md-6">
                         <label for="phone">Telefon</label>
                         <input type="text" name="phone" value="<?=isset($_SESSION['fill-phone']) ? $_SESSION['fill-phone'] : ''?>" id="phone" class="form-control" maxlength="11">

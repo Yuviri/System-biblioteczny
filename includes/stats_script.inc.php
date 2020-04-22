@@ -17,9 +17,9 @@ if (!isset($_POST['date'])) {
 
         if(!$staty->get_flags()){
             $export_btn = 
-            '<form action="includes/export.inc.php" class="text-center mb-5" method="get">
+            '<form action="includes/export.inc.php" class="text-center mb-5  mx-auto" method="get">
                 <input type="hidden" name="date" value="'.$_POST['date'].'">
-                <button type="submit" class="btn btn-success px-5" name="export">Eksport</button>
+                <button type="submit" class="btn btn-success px-5 name="export">Eksport</button>
             </form>';
         } else {
             $export_btn = '';

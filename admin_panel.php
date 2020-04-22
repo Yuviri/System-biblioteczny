@@ -43,7 +43,7 @@
                 ?>
 
                 <div class="fold_box p-3">
-                    <div class="box_header text-center bg-dark text-light p-3 row no-gutters" id="b_h1">
+                    <div class="box_header text-center th-custom text-light p-3 row no-gutters" id="b_h1">
                         <div class="box_title col-11">Pracownicy</div><div id="w_state1" class="box_state col-1">+</div>
                     </div>
                     <div class="box_content" id="b_c1">
@@ -56,7 +56,7 @@
 
                 
                 <div class="fold_box p-3">
-                    <div class="box_header text-center bg-dark text-light p-3 row no-gutters" id="b_h2">
+                    <div class="box_header text-center th-custom text-light p-3 row no-gutters" id="b_h2">
                         <div class="box_title col-11">Dodawanie pracowników</div><div id="w_state2" class="box_state col-1">+</div>
                     </div>
                     <div class="box_content" id="b_c2">

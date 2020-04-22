@@ -38,7 +38,6 @@ class Reshandler extends Dbc {
         try {
             $sql1 = "UPDATE rezerwacja SET status='zakonczona' WHERE id_rez='$this->id'";
             $sql2 = "INSERT INTO wypozyczenie VALUES(NULL, '$this->czytelnik', '$this->pracownik', '$this->egzemplarz', '$this->od', '$this->do', NULL)";
-            $sql3 = "DROP EVENT IF EXISTS reservation_".$this->ide.";";
 
             if(!$this->connect_mysqli()->query($sql1)){
                 throw new Exception("Pierwsze zapytanie");
@@ -46,9 +45,7 @@ class Reshandler extends Dbc {
             if(!$this->connect_mysqli()->query($sql2)){
                 throw new Exception("Drugie zapytanie");    
             }
-            if(!$this->connect_mysqli()->query($sql3)){
-                throw new Exception("Trzecie zapytanie");    
-            }
+
             
         } catch (Exception $e) {
             $this->error = $e;

@@ -18,7 +18,7 @@ class BookPage extends Dbc{
         }
     }
     protected function getComments($isbn){
-        $sql = "SELECT komentarze.id_komentarza, komentarze.autor, komentarze.data_w, komentarze.za, komentarze.tresc, uzytkownik.email, uzytkownik.imie, uzytkownik.nazwisko, uzytkownik.plec, uzytkownik.awatar FROM uzytkownik, komentarze, szczegoly WHERE uzytkownik.email = komentarze.autor AND komentarze.ksiazka = szczegoly.ISBN AND szczegoly.ISBN='$isbn'";
+        $sql = "SELECT komentarze.id_komentarza, komentarze.autor, komentarze.data_w, komentarze.tresc, uzytkownik.email, uzytkownik.imie, uzytkownik.nazwisko, uzytkownik.plec, uzytkownik.awatar FROM uzytkownik, komentarze, szczegoly WHERE uzytkownik.email = komentarze.autor AND komentarze.ksiazka = szczegoly.ISBN AND szczegoly.ISBN='$isbn'";
 
         if($query = $this->connect()->query($sql)){
 

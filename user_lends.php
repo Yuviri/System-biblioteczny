@@ -65,7 +65,6 @@
                     $queryR = $db->query("SELECT rezerwacja.id_rez, rezerwacja.od, rezerwacja.do, szczegoly.nazwa, rezerwacja.egzemplarz FROM rezerwacja, szczegoly, egzemplarz WHERE rezerwacja.czytelnik='$email' AND rezerwacja.egzemplarz=egzemplarz.id_egzemplarza AND egzemplarz.ISBN=szczegoly.ISBN AND rezerwacja.status='aktywna'");
                     $resultR = $queryR->fetchAll();
 
-                    // $od = new DataTime($resultR=>0['od'])
 
                     foreach ($resultR as $row => $value) {
 

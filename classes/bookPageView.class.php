@@ -54,11 +54,33 @@ class BookPageView extends BookPage{
                 if($data_comm===0){
                     echo '
                     <div class="comment row border d-flex p-3">
-                        <div class="col-12 align-self-center">
+                        <div class="col-md-8 align-self-center  ">
                             <p class="comment-info d-inline-block mx-5">Ta książka nie ma jeszcze żadnych opinii. Czy chcesz napisać pierwszą?</p>
-                           <a href="#" class="btn btn-primary d-inline-block write-comment px-4">Napisz</a>
                         </div>
+                        <div class="col-md-4 align-self-center text-center ">
+                          <button class="btn btn-primary d-inline-block write-comment px-4" id="write_btn" data-toggle="modal" data-target="#modal_testowy">Napisz</button>
+                        </div>     
                     </div>
+
+                    <div id="modal_testowy" class="modal fade" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title">Nowy komentarz</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <textarea class="form-control" id="comment-text"></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-primary" id="add_btn">Dodaj komentarz</button>
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                 ';
                 $flag = true;
                 } else {
@@ -75,10 +97,10 @@ class BookPageView extends BookPage{
                                     <span class="d-block mt-1">'.$value['imie'].' '.$value['nazwisko'].'</span>
                                     <span class="d-block mt-1 add_date">'.$value['data_w'].'</span>
                                </div>
-                               <div class="col-md-8 comm-content">
+                               <div class="col-md-8 mt-2 mt-md-0 comm-content">
                                     <p id="original-text">'.$value['tresc'].'</p> 
                                </div>
-                               <div class="col-md-2 comm-rating text-center">
+                               <div class="col-md-2 comm-rating align-self-center text-center">
                                     <button class="btn btn-primary" data-toggle="modal" data-target="#modal_edit">Edytuj opinię</button>
                                </div> 
                         </div>
@@ -115,7 +137,7 @@ class BookPageView extends BookPage{
                                     <span class="d-block mt-1">'.$value['imie'].' '.$value['nazwisko'].'</span>
                                     <span class="d-block mt-1 add_date">'.$value['data_w'].'</span>
                                </div>
-                               <div class="col-md-8 comm-content">
+                               <div class="col-md-8 mt-2 mt-md-0  comm-content">
                                     <p>'.$value['tresc'].'</p> 
                                </div>
                         </div>
@@ -127,32 +149,37 @@ class BookPageView extends BookPage{
 
                 if (!$flag) {
                     echo '<div class="comment row border d-flex p-3" id="new_comment">
-                    <div class="col-12 align-self-center" id="new_comment_text">
-                        <p class="comment-info d-inline-block mx-5">Nie mamy twojej opinii o tej książce. Czy chcesz ją napisać?</p>
-                       <button class="btn btn-primary d-inline-block write-comment px-4" id="write_btn" data-toggle="modal" data-target="#modal_testowy">Napisz</button>
-                    </div>
-                </div>
+                            <div class="col-md-8 align-self-center" id="new_comment_text">
+                              <p class="comment-info d-inline-block mx-5">Nie mamy twojej opinii o tej książce. Czy chcesz ją napisać?</p>
+                            </div>
+
+                            <div class="col-md-4 align-self-center" id="new_comment_text">
+                              <button class="btn btn-primary d-inline-block write-comment px-4" id="write_btn" data-toggle="modal" data-target="#modal_testowy">Napisz</button>
+                            </div>
+
+                            
+                          </div>
                 
                 
-                <div id="modal_testowy" class="modal fade" tabindex="-1" role="dialog">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title">Nowy komentarz</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              <textarea class="form-control" id="comment-text"></textarea>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-primary" id="add_btn">Dodaj komentarz</button>
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                          <div id="modal_testowy" class="modal fade" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title">Nowy komentarz</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <textarea class="form-control" id="comment-text"></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-primary" id="add_btn">Dodaj komentarz</button>
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
                 
                 ';
                     } 

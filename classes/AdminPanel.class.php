@@ -19,7 +19,7 @@ class AdminPanel extends Dbc
                 $result = $query->fetchAll();
                 
                 echo '<table class="table w_table">
-                            <thead class="thead-dark">
+                            <thead class="th-custom text-light">
                                 <tr><th>#</th><th>Imię</th><th>Nazwisko</th><th>Email</th><th>Telefon</th></tr>
                             </thead>
                             <tbody>';

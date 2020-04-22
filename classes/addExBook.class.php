@@ -13,7 +13,7 @@ class AddExBook extends Dbc {
     }
 
     public function addExB(){
-        // $sql = "INSERT INTO szczegoly VALUES('$this->isbn', '$this->title', '$this->author', '$this->o_title', '$this->genre', '$this->description', '$this->publisher', '$this->cover')";
+        
         $flag = false;
         $sql = "INSERT INTO egzemplarz VALUES(?, ?, ?)";
         $query = $this->connect()->prepare($sql);

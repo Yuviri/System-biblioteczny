@@ -30,7 +30,7 @@
                 <h1>Księgozbiór biblioteki</h1>
             </header>
             <article>
-                <div id='b_table'>
+                <div id='b_table' class="row">
                     <?php
                         $list = new Collection();
                         $list->generate_list();

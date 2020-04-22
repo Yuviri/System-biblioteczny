@@ -25,7 +25,7 @@ class AddBook extends Dbc {
 
     public function upload_cover($file, $title, $author){
 
-        $fileName = $file['name'];
+        $fileName =  strtolower($file['name']);
         $fileTmpName = $file['tmp_name'];
         $fileSize = $file['size'];
         $fileError = $file['error'];
@@ -37,9 +37,8 @@ class AddBook extends Dbc {
 
         if(in_array($actualExt, $allowed)){
             if ($fileError === 0) {
-                // Tymczasowy rozmiar
-                if($fileSize <= 1000000000000){
-                    // Poprawić nazwy
+                // Rozmiar < 20MB
+                if($fileSize <= 20000000){
                     $finalName = uniqid('', true).'.'.$actualExt;
                     $fileDestination = '../img/covers/'.$finalName;
                     $nameDb = 'img/covers/'.$finalName;
@@ -62,7 +61,6 @@ class AddBook extends Dbc {
     }
 
     public function addB(){
-        // $sql = "INSERT INTO szczegoly VALUES('$this->isbn', '$this->title', '$this->author', '$this->o_title', '$this->genre', '$this->description', '$this->publisher', '$this->cover')";
         $sql = "INSERT INTO szczegoly VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
         $query = $this->connect()->prepare($sql);
 

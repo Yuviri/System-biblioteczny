@@ -9,6 +9,9 @@ body{
     font-size: 17px;
 }
 
+.th-custom{
+    background-color: #21664f !important;
+}
 
 h1
 {
@@ -29,27 +32,6 @@ h1
 }
 
 
-
-
-/* .whole
-{
-    display: flex;
-    justify-content: center;
-}
-
-#half1
-{
-    display: inline-block;
-    width: 498px;
-}
-
-#half2
-{
-    display: inline-block;
-    width: 498px;
-    text-align: right;
-} */
-
 .tab th
 {
     text-align: right;
@@ -60,223 +42,8 @@ h1
     padding-left: 5px;
 }
 
-.tabelka
-{
-
-    border-collapse: collapse;
-    display: inline-block;
-    margin-right: 10px;
-
-    font-size: 15px;
-}
-
-
-.tabelka tr
-{
-    border: 1px solid black;
-    border-collapse: collapse;
-}
-
-.tabelka th
-{
-    border: 1px solid black;
-    border-collapse: collapse;
-    text-align: center;
-    padding: 5px;
-    background-color: rgb(225, 225, 255);
-    
-}
-
-.tabelka td
-{
-    border: 1px solid black;
-    border-collapse: collapse;
-    padding: 5px;
-    text-align: right;
-}
-
-.tabelka tr:nth-child(even)
-{
-    background-color: #f2f2f2;
-}
-
-
-.komunikat
-{
-    font-size: 32px;
-}
-
-.hreturn
-{
-    text-decoration: none;
-    color: deeppink;
-}
-
-.con_tab
-{
-    width: 250px;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 50px;
-}
-
-.zwrot
-{
-    display: block;
-    margin-top: 20px;
-    text-decoration: none;
-    color: white;
-    background-color: #4CAF50;
-    padding: 5px;
-    text-align: center;
-    font-size: 32px;
-    width: 250px;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 25px;
-    margin-bottom: 30px;    
-    cursor: pointer;
-}
-
-.zwrot:hover
-{
-    background-color: rgb(36, 114, 39);
-}
-
-.counter
-{
-    font-size: 15px;
-    
-}
-
-.baner
-{
-    margin: 0;
-    padding: 5px;
-}
-
-.baner h1
-{
-    font-size: 50px;
-    text-align: center;
-    text-transform: uppercase;
-}
-
-.space
-{
-    height: 10px;
-}
-
-
-
-.item{
-    width: 800px;
-    background-color: rgb(136, 183, 221);
-    border-radius: 25px;
-    padding: 5px 25px 5px 25px;
-    margin-top: 10px;
-}
-
-.back_home{
-    height: 128px;
-    width: 128px;
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background-image: url(img/reply.png);
-}
-
-
-
-.logout
-{
-	text-decoration: none;
-	color: white;
-	background: #4f52d1;
-	margin-left: auto;
-	margin-right: auto;
-	display: block;
-	width: 140px;
-	padding: 5px 10px;
-	font-family: lato;
-	font-size: 17px;
-	border: none;
-	border-radius: 5px;
-	text-align: center;
-	transition: background-color 0.5s ease-out;
-	-webkit-box-shadow: 3px 3px 7px 1px rgba(0,0,0,0.64);
-	-moz-box-shadow: 3px 3px 7px 1px rgba(0,0,0,0.64);
-	box-shadow: 3px 3px 7px 1px rgba(0,0,0,0.64);
-	margin-top: 10px;
-}
-
-.logout:hover{
-	background-color: #464bf4;
-}
-
-.check_t
-{
-	text-decoration: none;
-	color: white;
-	background: #4f52d1;
-	margin-left: auto;
-	margin-right: auto;
-	display: block;
-	width: 140px;
-	padding: 5px 10px;
-	font-family: lato;
-	font-size: 17px;
-	border: none;
-	border-radius: 5px;
-	text-align: center;
-	transition: background-color 0.5s ease-out;
-	-webkit-box-shadow: 3px 3px 7px 1px rgba(0,0,0,0.64);
-	-moz-box-shadow: 3px 3px 7px 1px rgba(0,0,0,0.64);
-	box-shadow: 3px 3px 7px 1px rgba(0,0,0,0.64);
-	margin-top: 10px;
-}
-
-.user_control
-{
-    width: 300px;
-    margin: auto;
-	padding: 15px;
-	background-color: #5f236e;
-	border-radius: 30px;
-	color: white;
-	-webkit-box-shadow: 3px 3px 7px 1px rgba(0,0,0,0.64);
-	-moz-box-shadow: 3px 3px 7px 1px rgba(0,0,0,0.64);
-	box-shadow: 3px 3px 7px 1px rgba(0,0,0,0.64);
-	text-align: center;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-.th-custom{
-    background-color: #21664f;
-}
-
-
-
-
 
 /* Katalog książek */
-
-
-.filters_pane{
-    /* background-color: #21664f; */
-    
-}
 
 .results_wrapper{
     min-height: 200px;
@@ -287,7 +54,7 @@ h1
 }
 
 .book_tab a{
-    width: 140px;
+    min-width: 130px;
 }
 
 .cover{
@@ -440,15 +207,6 @@ input::-webkit-calendar-picker-indicator {
     font-size: 22px;
 }
 
-.write-comment{
-    font-size: 22px;
-}
-
-
-
-
-
-
 /* Raporty */
 
 #rep_page{
@@ -490,6 +248,73 @@ input::-webkit-calendar-picker-indicator {
 
     .b_info{
         margin-top: 20px;
+    }
+
+    .cover img{
+        width: 90%;
+        margin: auto;
+    }
+
+    .book_tab_controls a{
+        display: block;
+        width: 100%;
+    }
+
+    .write-comment{
+        width: 100%;
+    }
+
+    .table{
+        font-size: 14px;
+    }
+
+  }
+
+  @media only screen and (min-width: 576px) {
+
+    .cover img{
+        width: 90%;
+        margin: auto;
+    }
+
+    .book_tab_controls a{
+        display: block;
+        width: 100%;
+    }
+
+    .write-comment{
+        width: 100%;
+    }
+
+    .table{
+        font-size: 14px;
+    }
+
+  }
+
+  @media only screen and (min-width: 768px) {
+
+    .cover img{
+        width: 70%;
+        margin: auto;
+    }
+
+    .cover{
+        display: flex;
+        align-self: center;
+    }
+
+    .book_tab_controls a{
+        display: block;
+        width: 100%;
+    }
+
+  }
+
+  @media only screen and (min-width: 992px) {
+
+    .cover img{
+        width: 90%;
     }
 
   }

@@ -34,9 +34,9 @@
             <article>
                 
             <div class="row justify-content-around pt-2">
-                <!-- <input type="date" name="date" id="date" class="form-control col-md-6" onkeyup="day_search()"> -->
-                <select name="rok" id="rok" class="form-control col-md-3">
-                    <!-- <option value="2019">2019</option> -->
+
+                <select name="rok" id="rok" class="form-control col-md-3 mb-1 mb-md-0">
+
 
                     <?php
 
@@ -46,7 +46,7 @@
 
                     ?>
                 </select>
-                <select name="miesiac" id="miesiac" class="form-control col-md-3">
+                <select name="miesiac" id="miesiac" class="form-control col-md-3 mb-1 mb-md-0">
                     <option value="01" <?=$month==='01' ? 'selected="selected"' : '' ?>>Styczeń</option>
                     <option value="02" <?=$month==='02' ? 'selected="selected"' : '' ?>>Luty</option>
                     <option value="03" <?=$month==='03' ? 'selected="selected"' : '' ?>>Marzec</option>
@@ -60,11 +60,11 @@
                     <option value="11" <?=$month==='11' ? 'selected="selected"' : '' ?>>Listopad</option>
                     <option value="12" <?=$month==='12' ? 'selected="selected"' : '' ?>>Grudzień</option>
                 </select>
-                <input type="number" class="form-control col-md-3" name="dzien" id="dzien" placeholder="Wpisz dzień">
+                <input type="number" class="form-control col-md-3 mb-1 mb-md-0" name="dzien" id="dzien" placeholder="Wpisz dzień">
                 <button class="text-center col-md-2 btn btn-primary" onclick='day_search()'>Wyświetl</button>
             </div>
             
-            <div id="rep_page" class="pt-5">
+            <div id="rep_page" class="pt-5 row">
                 
             </div>
 

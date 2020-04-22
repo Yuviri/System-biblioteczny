@@ -45,37 +45,37 @@
                     <div class="row">
                         <div class="form-group col-12 text-left">
                             <label for="isbn">ISBN</label>
-                            <input name="isbn" id="isbn" class="form-control <?=isset($_SESSION['a_isbn_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php $utility->checkSessionVar('fill_isbn');?>"  />
+                            <input name="isbn" id="isbn" class="form-control <?=isset($_SESSION['a_isbn_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php $utility->checkSessionVar('fill_isbn');?>" required/>
                             <?php $utility->checkSessionVar('a_isbn_err');?>
                         </div>
 
                         <div class="form-group col-12 text-left">
                             <label for="title">Tytuł</label>
-                            <input name="title" id="title" class="form-control <?=isset($_SESSION['a_title_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php $utility->checkSessionVar('fill_title');?>" />
+                            <input name="title" id="title" class="form-control <?=isset($_SESSION['a_title_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php $utility->checkSessionVar('fill_title');?>" required/>
                             <?php $utility->checkSessionVar('a_title_err');?>
                         </div>
                         
                         <div class="form-group col-12 text-left">
                             <label for="author">Autor</label>
-                            <input name="author" id="author" class="form-control <?=isset($_SESSION['a_author_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php $utility->checkSessionVar('fill_author');?>" />
+                            <input name="author" id="author" class="form-control <?=isset($_SESSION['a_author_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php $utility->checkSessionVar('fill_author');?>" required/>
                             <?php $utility->checkSessionVar('a_author_err');?>
                         </div>
                         
                         <div class="form-group col-12 text-left">
                             <label for="o_title">Tytuł oryginału</label>
-                            <input name="o_title" id="o_title" class="form-control <?=isset($_SESSION['a_o_title_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php $utility->checkSessionVar('fill_o_title');?>" />
+                            <input name="o_title" id="o_title" class="form-control <?=isset($_SESSION['a_o_title_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php $utility->checkSessionVar('fill_o_title');?>" required/>
                             <?php $utility->checkSessionVar('a_o_title_err');?>
                         </div>
                         
                         <div class="form-group col-12 text-left">
                             <label for="genre">Gatunek</label>
-                            <input name="genre" id="genre" class="form-control <?=isset($_SESSION['l_genre_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php $utility->checkSessionVar('fill_genre');?>" />
+                            <input name="genre" id="genre" class="form-control <?=isset($_SESSION['l_genre_err']) ? 'is-invalid' : ''?>" autocomplete="off" value="<?php $utility->checkSessionVar('fill_genre');?>" required/>
                             <?php $utility->checkSessionVar('l_genre_err');?>
                         </div>
 
                         <div class="form-group col-12 text-left">
                             <label for="publisher">Wydawnictwo</label>
-                            <input list="publisher" name="publisher" class="form-control <?=isset($_SESSION['l_publisher_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
+                            <input list="publisher" name="publisher" class="form-control <?=isset($_SESSION['l_publisher_err']) ? 'is-invalid' : ''?>" autocomplete="off" required/>
                             <datalist id="publisher">
                                 <?php echo $utility->get_publishers(); ?>
                             </datalist>
@@ -85,7 +85,7 @@
                         <div class="form-group col-12 text-left">
                             <label for="cover">Okładka</label>
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input <?=isset($_SESSION['a_cover_err']) ? 'is-invalid' : ''?>" id="cover" lang="pl-Pl" name="cover">
+                                <input type="file" class="custom-file-input <?=isset($_SESSION['a_cover_err']) ? 'is-invalid' : ''?>" id="cover" lang="pl-Pl" name="cover" required>
                                 <label class="custom-file-label" for="cover" data-browse="Przeglądaj">Wybierz pliki</label>
                             </div>
                             <?php $utility->checkSessionVar('a_cover_err');?>
@@ -93,7 +93,7 @@
 
                         <div class="form-group col-12 text-left">
                             <label for="description">Opis</label>
-                            <textarea class="form-control <?=isset($_SESSION['l_description_err']) ? 'is-invalid' : ''?>" id="description" name="description" rows="7"><?php $utility->checkSessionVar('fill_description');?></textarea>
+                            <textarea class="form-control <?=isset($_SESSION['l_description_err']) ? 'is-invalid' : ''?>" id="description" name="description" rows="7" required><?php $utility->checkSessionVar('fill_description');?></textarea>
                             <?php $utility->checkSessionVar('l_description_err');?>
                         </div>
 
@@ -113,7 +113,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
 	</script>
 	<script src="bootstrap/bootstrap.min.js"></script>
-    <!-- <script src="scripts/katalog.js"></script> -->
     <script>
         $(".custom-file-input").on("change", function() {
         var fileName = $(this).val().split("\\").pop();

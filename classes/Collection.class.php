@@ -22,7 +22,7 @@
             // Licznik
             $n = 0;
 
-            echo '<table class="table table-striped">
+            echo '<table class="table table-striped col-12">
                 <thead class="th-custom text-light">
                     <tr>
                         <th>#</th>

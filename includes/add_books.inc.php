@@ -2,7 +2,7 @@
 
 
 if (!isset($_POST['title'])) {
-    header('Location: add_books_form.php');
+    header('Location: ../add_books_form.php');
 } else {
 
     session_start();
@@ -10,7 +10,6 @@ if (!isset($_POST['title'])) {
     require_once 'autoloader.inc.php';
     require_once 'functions.inc.php';
 
-    //Dodaj sprawdzanie długości
 
     $isbn = $_POST['isbn'];
     $isbn = clean_input($isbn);
@@ -34,11 +33,6 @@ if (!isset($_POST['title'])) {
     $publisher = clean_input($publisher);
  
     $cover = $_FILES['cover'];
-
-    //To ma związek ściśle z uploudem plików
-
-
-    //Czy zmienna isbn jest intem oraz czy ma odpowiednią długość(niżej)  ZAMIENIĆ W JEDNEGO IFA PO WYKONANIU UPLOADU COVERA
 
     if(!preg_match("/^[1-9][0-9]*$/", $isbn)) {
         $_SESSION['a_isbn_err'] = '<div class="invalid-feedback">Nieprawidłowy numer ISBN</div>';
@@ -70,7 +64,7 @@ if (!isset($_POST['title'])) {
 
     $book = new AddBook($isbn, $title, $author, $o_title, $genre, $description, $publisher);
 
-    // Warunek czy obrazek się zuploadował
+    // Warunek czy obrazek się zauploadował
 
     if(!$book->upload_cover($cover, $title, $author)){
         $_SESSION['a_cover_err'] = '<div class="invalid-feedback">'.$book->get_upload_err().'</div>';
@@ -83,11 +77,12 @@ if (!isset($_POST['title'])) {
         $_SESSION['fill_genre'] = $title;
         $_SESSION['fill_publisher'] = $publisher;
         $_SESSION['fill_description'] = $description;
+
+        header('Location: ../add_books_form.php');
+        exit();
     } 
 
     //Dodanie pozycji do bazy danych
-
-    
 
     if($book->addB()){
         $_SESSION['a-success'] = '<div class="alert alert-success">Dodano nową pozycję</div>';

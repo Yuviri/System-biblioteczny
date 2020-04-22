@@ -1,10 +1,8 @@
 <?php
 
     session_start();
-    unset($_SESSION['imie']);
-    unset($_SESSION['nazwisko']);
-
-    session_destroy();
+    
+    $_SESSION = array();
 
     header("Location: login_form.php");
 

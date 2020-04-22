@@ -51,10 +51,6 @@
                     <div class="row">
                         <div class="form-group col-12 text-left">
                             <label for="czytelnik_input">Czytelnik</label>
-                            <!-- <input type="text" id="czytelnik" name="czytelnik" class="form-control" autocomplete="off">
-                            <div class="search-list" id='c-list'>
- 
-                            </div> -->
                             <input list="czytelnik" name="czytelnik" id="czytelnik_input" class="form-control <?=isset($_SESSION['l_email_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
                             <datalist id="czytelnik" >
                                 <?php
@@ -66,10 +62,6 @@
                         
                         <div class="form-group col-12 text-left">
                             <label for="egzemplarz_input">Nr egzemplarza</label>
-                            <!-- <input type="text" id="egzemplarz" name="egzemplarz" class="form-control" autocomplete="off">
-                            <div class="search-list" id='b-list'>
-
-                            </div> -->
                             <input list="egzemplarz" name="egzemplarz" id="egzemplarz_input" class="form-control <?=isset($_SESSION['l_egz_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
                             <datalist id="egzemplarz" >
                                 <?php
@@ -81,12 +73,12 @@
                         
                         <div class="form-group col-12 text-left">
                             <label for="od">Data wypożyczenia</label>
-                            <input type="date" id="od" name="od" class="form-control" value="<?= $utility->get_today() ?>">
+                            <input type="date" id="od" name="od" class="form-control" value="<?= $utility->get_today() ?>" required>
                         </div>
                         
                         <div class="form-group col-12 text-left">
                             <label for="do">Przybliżona data zwrotu</label>
-                            <input type="date" id="do" name="do" class="form-control" value="<?= $utility->get_estimated() ?>">
+                            <input type="date" id="do" name="do" class="form-control" value="<?= $utility->get_estimated() ?>" required>
                         </div>
 
                         <input type="submit" value="Zatwierdź" class="btn btn-primary mx-auto mb-5">
@@ -105,7 +97,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
 	</script>
 	<script src="bootstrap/bootstrap.min.js"></script>
-    <!-- <script src="scripts/katalog.js"></script> -->
 
 
 </body>

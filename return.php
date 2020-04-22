@@ -6,16 +6,9 @@
       require_once 'database.php';
 
       try {
-        // if(!filter_input(INPUT_POST, 'czytelnik', FILTER_VALIDATE_EMAIL)){
-        //   $_SESSION['l_email_err'] = '<div class="invalid-feedback">Nieprawidłowy adres email</div>';
-        //   header("Location: lend_form.php");
-        //   exit();
-        // }
-        // else {
-        //   $czytelnik = filter_input(INPUT_POST, 'czytelnik', FILTER_VALIDATE_EMAIL);
-        // }
+
         if(!filter_input(INPUT_POST, 'wypozyczenie', FILTER_VALIDATE_INT)){
-          $_SESSION['r_wyp_err'] = '<div class="invalid-feedback">Podane wypożyczenie jest nieprawidłowy</div>';
+          $_SESSION['r_wyp_err'] = '<div class="invalid-feedback">Podane wypożyczenie jest nieprawidłowe</div>';
           header("Location: return_form.php");
           exit();
         } else {
@@ -28,7 +21,7 @@
 
         // Sprawdzanie czy istnieje wypożyczenie
 
-        $query = $db->prepare("SELECT * FROM wypozyczenie WHERE id_wyp='$wyp'");
+        $query = $db->prepare("SELECT * FROM wypozyczenie WHERE id_wyp=:wyp AND data_zwrotu IS NULL");
         $query->bindValue(":wyp", $wyp);
         $query->execute();
 
@@ -37,7 +30,8 @@
           $_SESSION['nonexisting-err'] = "<div class='alert alert-warning'>Nie ma takiego wypożyczenia</div>";
           header("Location: return_form.php?c");
         } else {
-          $db->query("UPDATE wypozyczenie, egzemplarz SET wypozyczenie.data_zwrotu='$data_zwrotu', egzemplarz.czy_wyp=0 WHERE wypozyczenie.id_wyp='$wyp' AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza");
+          $ins = $db->prepare("UPDATE wypozyczenie, egzemplarz SET wypozyczenie.data_zwrotu=?, egzemplarz.czy_wyp=0 WHERE wypozyczenie.id_wyp=? AND wypozyczenie.id_egzemplarza=egzemplarz.id_egzemplarza");
+          $ins->execute([$data_zwrotu, $wyp]);
           $_SESSION['success'] = "<div class='alert alert-success'>Zwrócono egzemplarz</div>";
           header("Location: return_form.php");
         }

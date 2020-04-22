@@ -11,7 +11,7 @@
         
         $panel = new AdminPanel();
 
-        // Pobranie danych z posta i walidacja
+        // Pobranie danych z formularza i walidacja
 
         $flag = false;
 
@@ -50,16 +50,15 @@
         // Sprawdzanie wartości flagi
 
         if($flag){
+            $_SESSION['reg_a_error']= '<div class="alert alert-danger">Wystąpił problem z dodaniem pracownika</div>';
             header('Location: ../admin_panel.php');
         } else {
             
             $panel->add_worker($email, $haslo, $imie, $nazwisko, $plec, $telefon);
+            $_SESSION['reg_a_success']= '<div class="alert alert-success">Dodanie pracownika przebiegło pomyślnie</div>';
+            header("Location: ../admin_panel.php");
         }
 
 
 
     }
-
-
-
-    // header("Location: ../admin_panel.php?good");

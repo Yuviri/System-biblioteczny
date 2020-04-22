@@ -10,7 +10,6 @@ if (!isset($_POST['isbn'])) {
     require_once 'autoloader.inc.php';
     require_once 'functions.inc.php';
 
-    //Dodaj sprawdzanie długości
 
     $isbn = $_POST['isbn'];
     $isbn = clean_input($isbn);

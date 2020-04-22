@@ -84,8 +84,6 @@ class Utilities extends Dbc
 
     public function get_books_lended(){
 
-        // $query = $this->connect()->query("SELECT egzemplarz.id_egzemplarza, szczegoly.nazwa, szczegoly.autor FROM egzemplarz, szczegoly WHERE egzemplarz.ISBN = szczegoly.ISBN AND egzemplarz.czy_wyp=1");
-
         $query = $this->connect()->query("SELECT wypozyczenie.id_wyp, wypozyczenie.czytelnik, szczegoly.nazwa, szczegoly.autor FROM wypozyczenie, egzemplarz, szczegoly WHERE wypozyczenie.id_egzemplarza = egzemplarz.id_egzemplarza AND egzemplarz.ISBN = szczegoly.ISBN AND egzemplarz.czy_wyp=1 AND wypozyczenie.data_zwrotu is NULL");
 
         $result = $query->fetchAll();

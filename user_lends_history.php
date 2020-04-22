@@ -41,23 +41,7 @@
                 </ul>
                 
             </nav>
-<!-- 
-                <div class="book_tab_min row border p-2">
-                    
-                    <div class="book_info col-4 text-left my-auto">
-                        <h2 class="h3 text-left mt-1">Lewa Ręka Boga</h2>
-                    </div>
 
-                    <div class="book_info col-4 text-left my-auto">
-                        <h3 class="h4 text-left">Wypożyczone przez: Anna Kowalska</h3>
-                    </div>
-
-                    <div class="book_info col-4 text-left my-auto">
-                        <h3 class="h4 text-left">Data wypożyczenia: 2019-03-12</h3>
-                        <h3 class="h4 text-left">Data zwrotu: 2019-04-12</h3>
-                    </div>
-                    
-                </div> -->
                 <?php
                     require_once "database.php";
 

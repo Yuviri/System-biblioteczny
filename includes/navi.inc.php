@@ -81,7 +81,7 @@ echo
         if(isset($_SESSION["zalogowany"])){
             echo '
             <li class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggl" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="submenu">'.
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="submenu">'.
                 $_SESSION["imie"].' '.$_SESSION["nazwisko"].'</a>
                 
                 <div class="dropdown-menu" aria-labelledby="submenu">

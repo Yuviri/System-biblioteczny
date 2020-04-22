@@ -11,63 +11,53 @@ if(!isset($_POST['reservation'])){
     $od = $_POST['od'];
     $do = $_POST['do'];
     $pracownik = $_SESSION['email'];
+
+    if (!filter_input(INPUT_POST, "reservation", FILTER_VALIDATE_INT)) {
+        $_SESSION['lendr-err'] = '<div class="alert alert-danger">Numer rezerwacji musi być liczbą całkowitą</div>';
+        header("Location: ../reserve_lend_form.php");
+        exit();
+    }
     
-    $conn = mysqli_connect('localhost', 'root', '', 'library');
+    require_once "../database.php";
     
-    $sql1 = "SELECT czytelnik, egzemplarz FROM rezerwacja WHERE id_rez='$id'";
-    if(!$result1=$conn->query($sql1)){
-        $_SESSION['lendr-err'] = '<div class="alert alert-danger">Dana rezerwacja nie istnieje</div>';
+    $sql1 = "SELECT czytelnik, egzemplarz FROM rezerwacja WHERE id_rez='$id' AND status='aktywna'";
+    $check = $db->query($sql1);
+    
+    if(!$check){
+        $_SESSION['lendr-err'] = '<div class="alert alert-danger">Nie znaleziono podanej rezerwacji</div>';
+        header("Location: ../reserve_lend_form.php");
         exit();
     }
 
-    while ($row = mysqli_fetch_assoc($result1)) {
-        $czytelnik = $row['czytelnik'];
-        $egzemplarz = $row['egzemplarz'];
-        if(strlen($egzemplarz)==1){
-            $ide = '0'.$egzemplarz;
-        } else {
-            $ide = $egzemplarz;
-        }
+    $result = $check->fetchAll();
+
+    foreach ($result as $key => $value) {
+        $czytelnik = $value['czytelnik'];
+        $egzemplarz = $value['egzemplarz'];
     }
 
-    $sql2 = "UPDATE rezerwacja SET status='zakonczona' WHERE id_rez='$id'";
-    $sql3 = "INSERT INTO wypozyczenie VALUES(NULL, '$czytelnik', '$pracownik', '$egzemplarz', '$od', '$do', NULL)";
-    $sql4 = "DROP EVENT IF EXISTS reservation_".$ide.";";
+    $sql2 = "UPDATE rezerwacja SET status='zakonczona' WHERE id_rez=?";
+    $sql3 = "INSERT INTO wypozyczenie VALUES(?, ?, ?, ?, ?, ?, ?)";
 
-    if(!$result2=$conn->query($sql2)){
+    $upd = $db->prepare($sql2);
+
+    if(!$upd->execute([$id])){
         $_SESSION['lendr-err'] = '<div class="alert alert-danger">Błąd zmiany statusu rezerwacji</div>';
         header("Location: ../reserve_lend_form.php");
         exit();
     }
 
-    if(!$result3=$conn->query($sql3)){
+    $ins = $db->prepare($sql3);
+
+    if(!$ins->execute([NULL, $czytelnik, $pracownik, $egzemplarz, $od, $do, $NULL])){
         $_SESSION['lendr-err'] = '<div class="alert alert-danger">Błąd obsługi wypożyczenia</div>';
         header("Location: ../reserve_lend_form.php");
         exit();
     }
 
-    if(!$result4=$conn->query($sql4)){
-        $_SESSION['lendr-err'] = '<div class="alert alert-danger">Błąd usunięcia rezerwacji</div>';
-        header("Location: ../reserve_lend_form.php");
-        exit();
-    }
 
     $_SESSION['lendr-success'] = '<div class="alert alert-success">Pomyślnie wypożyczono zarezerwowany egzemplarz</div>';
     header("Location: ../reserve_lend_form.php");
 
-    $conn->close();
-    //Dodawanie w klasie (do poprawy)
-
-    // $lend = new Reshandler($id, $_SESSION['id']);
-    // $lend->get_reservation_data();
-    // if($lend->lend()){
-    //     $_SESSION['lendr-success'] = '<div class="alert alert-success">Pomyślnie wypożyczono zarezerwowany egzemplarz</div>';
-    //     header("Location: ../reserve_lend_form.php");
-    // } 
-    // else {
-    //     $error_message = $lend->getError();
-    //     $_SESSION['lendr-err'] = '<div class="alert alert-danger">Błąd: '.$error_message.'</div>';
-    //     header("Location: ../reserve_lend_form.php");
-    // }
 
 }

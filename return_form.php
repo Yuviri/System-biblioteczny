@@ -43,37 +43,25 @@
                 if (isset($_SESSION['nonexisting-err'])) unset($_SESSION['nonexisting-err']);
                 ?>
                 <form action="return.php" method="post" class="text-center">
-                    <!-- <div class="row">
-                        <div class="form-group col-12 text-left">
-                            <label for="czytelnik_input">Czytelnik</label>
-                            <input list="czytelnik" name="czytelnik" id="czytelnik_input" class="form-control <?=isset($_SESSION['l_email_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
-                            <datalist id="czytelnik" >
-                                <?php
-                                //require_once "get_users.php";
-                                ?>
-                            </datalist>
-                            <?//php checkSessionVar('l_email_err');?>
-                        </div> -->
-                        
-                        <div class="form-group col-12 text-left">
-                            <label for="egzemplarz_input">Nr wypożyczenia</label>
-                            <input list="wyp" name="wypozyczenie" id="wyp_input" data-show-subtext="true" class="form-control <?=isset($_SESSION['r_wyp_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
-                            <datalist id="wyp" >
-                                <?php
-                                   echo $utility->get_books_lended();
-                                ?>
-                            </datalist>
-                            <?php $utility->checkSessionVar('r_wyp_err');?>
-                        </div>
-                        
-                        <div class="form-group col-12 text-left">
-                            <label for="od">Data zwrotu</label>
-                            <input type="date" id="data_zwrotu" name="data_zwrotu" class="form-control" value="<?= $utility->get_today() ?>">
-                        </div>
-
-                        <input type="submit" value="Zatwierdź" class="btn btn-primary mx-auto mb-5">
-
+                         
+                    <div class="form-group col-12 text-left">
+                        <label for="egzemplarz_input">Nr wypożyczenia</label>
+                        <input list="wyp" name="wypozyczenie" id="wyp_input" data-show-subtext="true" class="form-control <?=isset($_SESSION['r_wyp_err']) ? 'is-invalid' : ''?>" autocomplete="off" />
+                        <datalist id="wyp" >
+                            <?php
+                                echo $utility->get_books_lended();
+                            ?>
+                        </datalist>
+                        <?php $utility->checkSessionVar('r_wyp_err');?>
                     </div>
+                    
+                    <div class="form-group col-12 text-left">
+                        <label for="od">Data zwrotu</label>
+                        <input type="date" id="data_zwrotu" name="data_zwrotu" class="form-control" value="<?= $utility->get_today() ?>" required>
+                    </div>
+
+                    <input type="submit" value="Zatwierdź" class="btn btn-primary mx-auto mb-5">
+
                 </form>
             </article>
         </div>

@@ -33,18 +33,18 @@
 
 			if($query->rowCount()>0)
 			{			
-				if(password_verify($password, $result["haslo"])){
-					$_SESSION['zalogowany'] = true;	
-					$_SESSION['email'] = $result['email'];
-					$_SESSION['imie'] = $result['imie'];
-					$_SESSION['nazwisko'] = $result['nazwisko'];
-					$_SESSION['uprawnienia'] = $result['uprawnienia'];
+					if(password_verify($password, $result["haslo"])){
+						$_SESSION['zalogowany'] = true;	
+						$_SESSION['email'] = $result['email'];
+						$_SESSION['imie'] = $result['imie'];
+						$_SESSION['nazwisko'] = $result['nazwisko'];
+						$_SESSION['uprawnienia'] = $result['uprawnienia'];
 
 
-					header('Location: index.php');
-				} else{
-					$_SESSION['err-login'] = '<div class="invalid-feedback">Nieprawidłowy login lub hasło</div>';
-					header('Location: login_form.php');
+						header('Location: index.php');
+					} else{
+						$_SESSION['err-login'] = '<div class="invalid-feedback">Nieprawidłowy login lub hasło</div>';
+						header('Location: login_form.php');
 				}
 			}else {
 				
@@ -52,8 +52,9 @@
 				header('Location: login_form.php');
 			}
 		}catch (PDOException $e) {
-			echo "<span style='color: red;'>Wystąpił błąd, spróbuj ponownie później</span><br>";
-			echo "Dev description: ".$e;
+			$_SESSION['err-public'] = "Wystąpił problem. Spróbuj ponownie później.";
+			$_SESSION['err-dev'] = $e;
+			header('Location: login_form.php');
 			}
 
 	

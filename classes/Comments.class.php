@@ -6,9 +6,9 @@ class Comments extends Dbc
     private $edit;
 
     public function addComment($email, $book, $date, $content){
-        $sql = "INSERT INTO komentarze VALUES (NULL, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO komentarze VALUES (NULL, ?, ?, ?, ?)";
         $query = $this->connect()->prepare($sql);
-        if ($query->execute([$email, $book, $date, '0', $content])) {
+        if ($query->execute([$email, $book, $date, $content])) {
             return true;
         } else {
             $this->error = $query->errorInfo();

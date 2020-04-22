@@ -8,17 +8,12 @@ if(isset($_GET['idr']) && isset($_SESSION['email']) && $_SESSION['uprawnienia']=
     $idr = $_GET['idr'];
     $ide = $_GET['ide'];
 
-
+    require_once "database.php";
 
     try {
         
-        $conn = mysqli_connect('localhost', 'root', '', 'library');
-
-        $conn->query("UPDATE rezerwacja SET status='anulowana' WHERE id_rez='$idr'");
-        $conn->query("UPDATE egzemplarz SET czy_wyp=0 WHERE id_egzemplarza='$ide'");
-        $conn->query("DROP EVENT IF EXISTS reservation_".$ide.";");
-        
-
+        $db->query("UPDATE rezerwacja SET status='anulowana' WHERE id_rez='$idr'");
+        $db->query("UPDATE egzemplarz SET czy_wyp=0 WHERE id_egzemplarza='$ide'");
 
         $_SESSION['cancel-feedback'] = '<div class="alert alert-success mt-2">Anulowano rezerwację</div>';
         header("Location: user_lends.php");

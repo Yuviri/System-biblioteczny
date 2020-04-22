@@ -33,15 +33,15 @@
                     <div class="filters_pane bg-secondary border col-12 p-2">
 
                         <form action="search.php" method="post" class="form-inline float-left">
-                            <select name="asc_desc" id="asc_desc" class="form-control mx-2">
+                            <select name="asc_desc" id="asc_desc" class="form-control mx-2 mb-1 mb-sm-0">
                                 <option value="asc" <?= isset($_GET['asc_desc']) && $_GET['asc_desc'] == "asc" ? "selected": ""?> >Rosnąco</option>
                                 <option value="desc" <?= isset($_GET['asc_desc']) && $_GET['asc_desc'] == "desc" ? "selected": ""?> >Malejąco</option>
                             </select>
-                            <select name="alpha_num" id="alpha_num" class="form-control mx-2">
+                            <select name="alpha_num" id="alpha_num" class="form-control mx-2 mb-1 mb-sm-0">
                                 <option value="szczegoly.nazwa" <?= isset($_GET['alpha_num']) && $_GET['alpha_num'] == "szczegoly.nazwa" ? "selected": ""?> >Alfabetycznie</option>
                                 <option value="total" <?= isset($_GET['alpha_num']) && $_GET['alpha_num'] == "total" ? "selected": ""?> >Wg sztuk</option>
                             </select>
-                            <input type="text" name="search_input" id="search_input" class="form-control" placeholder="wpisz szukaną frazę" onkeyup="searchq();" autocomplete="off">
+                            <input type="text" name="search_input" id="search_input" class="form-control mx-2" placeholder="wpisz szukaną frazę" onkeyup="searchq();" autocomplete="off">
                         </form>
 
                     </div>
@@ -62,17 +62,17 @@
                         foreach ($result as $row => $value) {
                             echo '    
                                 <div class="book_tab row border">
-                                    <div class="cover col-2 p-2">
+                                    <div class="cover col-12 col-lg-2 p-2">
                                         <img src="'.$value["cover"].'" alt="Okładka">
                                     </div>
-                                    <div class="book_info col-8">
+                                    <div class="book_info col-12 col-lg-8">
                                         <h2 class="h3 text-left mt-4">'.$value["nazwa"].'</h2>
                                         <h3 class="h4 text-left mt-2">'.$value["autor"].'</h3>
                                         <p class="description text-justify mt-4">'.$value["opis"]."...".'</p>
                                     </div>
-                                    <div class="book_tab_controls col-2 text-center d-flexbox align-self-center">
-                                        <a href="reserve.php?id='.$value['id_egzemplarza'].'" class="btn btn-primary mt-5">Zarezerwuj</a>
-                                        <a href="book_item.php?isbn='.$value['isbn'].'" class="btn btn-primary mt-1">Zobacz więcej</a>
+                                    <div class="book_tab_controls col-12 col-lg-2 text-center d-flexbox align-self-center">
+                                        <a href="reserve.php?id='.$value['id_egzemplarza'].'" class="btn btn-primary mb-1 mb-lg-0 mt-0 mt-lg-5">Zarezerwuj</a>
+                                        <a href="book_item.php?isbn='.$value['isbn'].'" class="btn btn-primary mb-1 mb-lg-0 mt-0 mt-lg-1">Zobacz więcej</a>
                                         <p class="books_counter mt-3">W bibliotece: <span class="font-weight-bold">'.$value["total"].'</span></p>
                                     </div>
                                 </div>

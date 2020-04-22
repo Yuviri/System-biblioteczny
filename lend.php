@@ -14,6 +14,19 @@
         else {
           $czytelnik = filter_input(INPUT_POST, 'czytelnik', FILTER_VALIDATE_EMAIL);
         }
+
+        // Sprawdzenie istnienia czytelnika
+
+        $query = $db->prepare("SELECT * from uzytkownik WHERE email=:czytelnik");
+        $query->bindValue(":czytelnik", $czytelnik);
+        $query->execute();
+
+        if($query->rowCount()==0){
+          $_SESSION['l_email_err'] = '<div class="invalid-feedback">Konto o podanym adresie nie istnieje</div>';
+          header("Location: lend_form.php");
+          exit();
+        }
+
         if(!filter_input(INPUT_POST, 'egzemplarz', FILTER_VALIDATE_INT)){
           $_SESSION['l_egz_err'] = '<div class="invalid-feedback">Podany egzemplarz jest nieprawidłowy</div>';
           header("Location: lend_form.php");
@@ -21,6 +34,7 @@
         } else {
           $egzemplarz = filter_input(INPUT_POST, 'egzemplarz', FILTER_VALIDATE_INT);
         }
+        
         $od = filter_input(INPUT_POST, 'od');
         $do = filter_input(INPUT_POST, 'do');
         $pracownik = $_SESSION['email'];
@@ -38,8 +52,11 @@
           $_SESSION['existing-err'] = "<div class='alert alert-warning'>Dany egzemplarz jest już wypożyczony</div>";
           header("Location: lend_form.php");
         } else {
-          $db->query("INSERT INTO wypozyczenie VALUES(NULL, '$czytelnik', '$pracownik', '$egzemplarz', '$od', '$do', NULL)");
-          $db->query("UPDATE egzemplarz SET czy_wyp=1 WHERE id_egzemplarza='$egzemplarz'");
+          $ins = $db->prepare("INSERT INTO wypozyczenie VALUES(?, ?, ?, ?, ?, ?, ?)");
+          $ins->execute([NULL, $czytelnik, $pracownik, $egzemplarz, $od, $do, $NULL]);
+
+          $upt = $db->prepare("UPDATE egzemplarz SET czy_wyp=1 WHERE id_egzemplarza=?");
+          $upt->execute([$egzemplarz]);
           $_SESSION['success'] = "<div class='alert alert-success'>Wypożyczono egzemplarz</div>";
           header("Location: lend_form.php");
         }
