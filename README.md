@@ -1,4 +1,4 @@
-# pd
+# System biblioteczny 
 
 Projekt wykonany na potrzeby pracy inżynierskiej
 
